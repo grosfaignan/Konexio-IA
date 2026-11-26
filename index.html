@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7f4">
+  <meta name="description" content="Trouvez une ressource Konnexio IA et téléchargez-la dans le format qui vous convient.">
+  <title>Ressources — Konnexio IA</title>
+  <link rel="stylesheet" href="assets/site.css">
+  <script src="assets/generator.js" defer></script>
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="./" aria-label="Konnexio IA, accueil">
+      <span class="brand-symbol" aria-hidden="true">K</span>
+      <span>Konnexio <b>IA</b></span>
+    </a>
+    <span class="masthead-note">Médiathèque pédagogique</span>
+  </header>
+
+  <main>
+    <section class="intro" aria-labelledby="page-title">
+      <div class="intro-copy">
+        <p class="kicker"><span class="live-dot" aria-hidden="true"></span> Ressources à télécharger</p>
+        <h1 id="page-title">Les contenus,<br><em>dans le bon format.</em></h1>
+        <p class="lede">Choisissez une ressource. Votre navigateur prépare le fichier demandé, à la volée.</p>
+      </div>
+      <aside class="format-stamp" aria-label="Formats disponibles">
+        <span class="stamp-caption">Un contenu</span>
+        <span class="stamp-arrow" aria-hidden="true">↘</span>
+        <div class="stamp-formats"><span>PDF</span><span>DOCX</span><span>HTML</span><span>MD</span></div>
+      </aside>
+    </section>
+
+    <section class="library" aria-labelledby="library-title">
+      <div class="library-head">
+        <div>
+          <p class="section-label">Catalogue</p>
+          <h2 id="library-title">Toutes les ressources</h2>
+        </div>
+        <span class="result-count" id="result-count">Chargement…</span>
+      </div>
+
+      <div class="toolbar">
+        <label class="search-box">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <span class="sr-only">Rechercher une ressource</span>
+          <input id="search" type="search" placeholder="Rechercher par titre ou thème" autocomplete="off">
+          <button id="clear-search" class="clear-search" type="button" aria-label="Effacer la recherche" hidden>×</button>
+        </label>
+        <label class="filter-label" for="category-filter">Thème</label>
+        <select id="category-filter" aria-label="Filtrer par thème">
+          <option value="all">Tous les thèmes</option>
+        </select>
+      </div>
+
+      <p id="status" class="status" role="status" aria-live="polite">Chargement du catalogue…</p>
+      <div id="documents" class="document-list" aria-label="Liste des ressources"></div>
+      <div id="empty-state" class="empty-state" hidden>
+        <span class="empty-mark" aria-hidden="true">＋</span>
+        <h3 id="empty-title">Aucune ressource pour le moment</h3>
+        <p id="empty-copy">Ajoutez un fichier JSON dans le dossier <code>documents/</code> du dépôt, puis publiez la mise à jour.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>Konnexio IA</span>
+    <span>Les fichiers sont créés dans votre navigateur.</span>
+  </footer>
+</body>
+</html>
+
