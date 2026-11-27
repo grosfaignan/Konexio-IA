@@ -13,7 +13,33 @@ from urllib.parse import urlparse
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "documents"
 SITE = ROOT / "_site"
-BLOCK_TYPES = {"heading", "paragraph", "list", "quote", "code", "link", "separator"}
+BLOCK_TYPES = {"heading", "paragraph", "list", "quote", "code", "link", "separator", "diagram"}
+
+
+def validate_diagram(block: dict, location: str) -> None:
+    def has_text(value: Any) -> bool:
+        return isinstance(value, str) and len(value) > 0
+
+    if not has_text(block.get("title")) or block.keys() - {"type", "title", "nodes", "edges"}:
+        raise ValueError(f"{location} : titre absent ou propriété de diagramme inconnue")
+    nodes = block.get("nodes")
+    if not isinstance(nodes, list) or not nodes:
+        raise ValueError(f"{location} : nodes doit contenir au moins un nœud")
+    ids = set()
+    for node in nodes:
+        if (not isinstance(node, dict) or node.keys() != {"id", "label"}
+                or not all(has_text(value) for value in node.values())):
+            raise ValueError(f"{location} : chaque nœud doit avoir un id et un label")
+        if node["id"] in ids:
+            raise ValueError(f"{location} : identifiant de nœud en double « {node['id']} »")
+        ids.add(node["id"])
+    if not isinstance(block.get("edges"), list):
+        raise ValueError(f"{location} : edges doit être une liste")
+    for edge in block["edges"]:
+        if (not isinstance(edge, dict) or edge.keys() - {"from", "to", "label"}
+                or not all(has_text(value) for value in edge.values())
+                or edge.get("from") not in ids or edge.get("to") not in ids):
+            raise ValueError(f"{location} : lien invalide, vérifiez from, to et le label facultatif")
 
 
 def read_document(path: Path) -> dict[str, Any]:
@@ -41,6 +67,8 @@ def read_document(path: Path) -> dict[str, Any]:
         if not isinstance(block, dict) or block.get("type") not in BLOCK_TYPES:
             raise ValueError(f"{location} : type attendu parmi {', '.join(sorted(BLOCK_TYPES))}")
         kind = block["type"]
+        if kind == "diagram":
+            validate_diagram(block, location)
         if kind in {"heading", "paragraph", "quote", "code", "link"} and not isinstance(block.get("text"), str):
             raise ValueError(f"{location} : le champ text doit être du texte")
         if kind == "link":

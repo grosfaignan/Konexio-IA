@@ -1,4 +1,10 @@
 <% it.blocks.forEach((block) => { %>
+  <% if (block.type === "diagram") { %>
+    <figure class="my-4">
+      <figcaption class="fw-semibold mb-2"><%= block.title %></figcaption>
+      <div x-data="diagram" class="diagram-view border rounded" data-graph="<%= JSON.stringify(block) %>" role="img" aria-label="<%= block.title %>"></div>
+    </figure>
+  <% } %>
   <% if (block.type === "heading") { %><h<%= block.level %> class="mt-4 mb-3"><%= block.text %></h<%= block.level %>><% } %>
   <% if (block.type === "paragraph") { %><p class="document-paragraph mb-3"><%= block.text %></p><% } %>
   <% if (block.type === "link") { %><p class="document-paragraph mb-3"><a href="<%= block.url %>"><%= block.text %></a></p><% } %>

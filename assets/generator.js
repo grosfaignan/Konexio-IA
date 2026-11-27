@@ -11,11 +11,12 @@ let downloadFormats;
 
 const safeText = (value) => String(value ?? "");
 
-function usableContent(documentData) {
+function usableContent(documentData, showDiagrams = false) {
   if (!documentData || documentData.schemaVersion !== 1 || !Array.isArray(documentData.content)) {
     throw new Error("Le document JSON n’a pas la version attendue.");
   }
   return documentData.content.filter((block) => {
+    if (block.type === "diagram") return showDiagrams;
     return !(block.type === "heading" && block.level === 1
       && safeText(block.text).trim() === safeText(documentData.title).trim());
   });
@@ -49,11 +50,12 @@ function markdownFor(documentData) {
 
 function htmlFor(documentData, template = "@page") {
   if (!eta) throw new Error("Les modèles Eta ne sont pas chargés.");
+  const content = usableContent(documentData, template === "@body");
   const data = {
-    document: { ...documentData, content: usableContent(documentData) },
+    document: { ...documentData, content },
     header: { ...headerData, title: documentData.title, category: documentData.category, description: documentData.description },
     footer: footerData,
-    content: usableContent(documentData),
+    content,
   };
   return eta.render(template, data);
 }
@@ -67,7 +69,7 @@ async function loadTemplates() {
     return response.headers.get("content-type")?.includes("json") ? response.json() : response.text();
   };
   [bodyTemplate, pageTemplate, headerTemplate, footerTemplate, blocksTemplate, headerData, footerData, downloadFormats] = await Promise.all([
-    read("templates/body.eta"), read("templates/page.eta?v=4"), read("templates/header.eta"), read("templates/footer.eta"), read("templates/blocks.eta?v=4"),
+    read("templates/body.eta"), read("templates/page.eta?v=4"), read("templates/header.eta"), read("templates/footer.eta"), read("templates/blocks.eta?v=5"),
     read("data/header.json"), read("data/footer.json"), read("data/components/downloads.json"),
   ]);
   eta.loadTemplate("@body", bodyTemplate);

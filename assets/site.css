@@ -70,6 +70,7 @@
   mask-composite: intersect;
 }
 #library-title { scroll-margin-top: 5rem; }
+.diagram-view { width: 100%; height: clamp(18rem, 50vh, 32rem); }
 @media (max-width: 575.98px) {
   .library-intro { grid-template-columns: 1fr; }
   .library-art { width: 17rem; }
