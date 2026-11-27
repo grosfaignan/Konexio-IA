@@ -1,0 +1,267 @@
+{
+  "schemaVersion": 1,
+  "title": "ClickUp et ChatGPT gratuit : prise en main et possibilités d’interfaçage",
+  "description": "Guide synthétique pour créer et utiliser un compte ClickUp, découvrir les outils MCP et vérifier ce qui est possible avec ChatGPT gratuit.",
+  "category": "Outils numériques",
+  "filename": "clickup-chatgpt-free-mcp",
+  "content": [
+    {
+      "type": "paragraph",
+      "text": "État de la documentation consultée le 27 novembre 2026. ClickUp propose son MCP sur tous ses forfaits, mais l’accès à une application ou à un serveur MCP dans ChatGPT dépend du forfait, du compte et de la région. Les étapes ci-dessous distinguent l’interfaçage direct, quand l’application ClickUp est disponible, des solutions de repli."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Créer un compte ClickUp — 5 étapes"
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        "Ouvrez la page officielle d’inscription : clickup.com/signup.",
+        "Choisissez l’inscription par e-mail ou une option proposée, comme Google.",
+        "Saisissez votre nom, votre adresse e-mail et créez un mot de passe si demandé.",
+        "Validez l’adresse e-mail depuis le message reçu, si ClickUp le demande.",
+        "Suivez l’assistant pour nommer votre Workspace et commencer sur le forfait Free Forever."
+      ]
+    },
+    {
+      "type": "image",
+      "src": "https://clickup.com/assets/brand/v4/Logo-gradient-on-light.svg",
+      "alt": "Logo officiel ClickUp, fourni dans les ressources de marque de ClickUp.",
+      "caption": "Ressource de marque officielle ClickUp — logo affiché à titre de repère sur la page d’inscription."
+    },
+    {
+      "type": "link",
+      "text": "S’inscrire sur ClickUp",
+      "url": "https://clickup.com/signup"
+    },
+    {
+      "type": "link",
+      "text": "Logo et ressources de marque ClickUp",
+      "url": "https://clickup.com/brand"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Se connecter — 2 étapes"
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        "Ouvrez clickup.com et sélectionnez Log in (Connexion), ou ouvrez directement l’application ClickUp.",
+        "Connectez-vous avec la même adresse e-mail, Google ou méthode utilisée à l’inscription, puis choisissez le Workspace voulu."
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Barre latérale gauche de ClickUp Web — repères essentiels"
+    },
+    {
+      "type": "list",
+      "items": [
+        "La navigation globale est la colonne verticale à gauche et reste accessible depuis les pages ClickUp.",
+        "Accueil ouvre la barre latérale Home : boîte de réception, notifications, commentaires assignés, favoris et activités.",
+        "La hiérarchie du Workspace regroupe les Espaces, Dossiers, sous-dossiers et Listes où se trouvent les tâches.",
+        "Bibliothèque donne accès aux Docs, tableaux de bord, tableaux blancs, formulaires, clips et autres contenus disponibles.",
+        "Chat ouvre les canaux et messages directs lorsque ces fonctions sont activées pour le compte.",
+        "Plus affiche les autres fonctions et l’App Center ; certaines peuvent être épinglées à la navigation.",
+        "La recherche permet de retrouver des éléments ou de lancer une commande dans l’espace de travail.",
+        "Le bouton Créer sert à ajouter rapidement une tâche, un Doc ou d’autres éléments proposés.",
+        "Les sections de la barre Home peuvent être filtrées, triées et personnalisées selon les fonctions autorisées.",
+        "Utilisez l’icône de repli pour masquer ou rouvrir la barre et élargir la zone de travail."
+      ]
+    },
+    {
+      "type": "link",
+      "text": "Documentation officielle : navigation globale ClickUp",
+      "url": "https://help.clickup.com/hc/en-us/articles/32050886697495-What-is-Global-Navigation"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Installer ClickUp sur un smartphone — 5 étapes"
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        "Sur iPhone ou iPad, ouvrez l’App Store ; sur Android, ouvrez Google Play.",
+        "Recherchez l’application officielle ClickUp publiée par ClickUp.",
+        "Touchez Installer ou Obtenir, puis attendez la fin du téléchargement.",
+        "Ouvrez l’application et autorisez les notifications si vous souhaitez les recevoir.",
+        "Connectez-vous avec votre compte ClickUp et sélectionnez le bon Workspace."
+      ]
+    },
+    {
+      "type": "link",
+      "text": "Applications ClickUp officielles — iOS, Android et ordinateur",
+      "url": "https://help.clickup.com/hc/en-us/articles/6311182548887-ClickUp-Apps-across-all-devices"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Utiliser ClickUp sur smartphone — 10 repères"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Depuis Accueil, retrouvez les tâches prioritaires et les éléments consultés récemment.",
+        "Ouvrez Boîte de réception pour lire les notifications et répondre aux collègues.",
+        "Touchez une tâche pour modifier son titre, sa description, son statut ou ses dates selon vos droits.",
+        "Utilisez les commentaires de tâche pour donner une mise à jour ou répondre à une question.",
+        "Ouvrez la hiérarchie par balayage depuis le bord gauche afin de parcourir Espaces, Dossiers et Listes.",
+        "La recherche mobile retrouve tâches, messages, Docs et autres contenus accessibles.",
+        "Depuis Mes tâches, consultez votre travail, vos rappels et vos éléments personnels.",
+        "Utilisez le menu Plus pour accéder aux fonctions mobiles proposées, par exemple Docs ou Clips.",
+        "Dans Accueil, ouvrez Chat pour lire ou envoyer des messages si Chat est activé pour votre compte.",
+        "La navigation et les fonctions visibles peuvent différer de la version Web ; certaines fonctions ne sont pas disponibles sur mobile."
+      ]
+    },
+    {
+      "type": "link",
+      "text": "Documentation officielle : prise en main de l’application mobile",
+      "url": "https://help.clickup.com/hc/en-us/articles/15145935126679-Intro-to-the-mobile-app"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Forfait gratuit ClickUp : outils du serveur MCP"
+    },
+    {
+      "type": "paragraph",
+      "text": "ClickUp indique que son MCP est disponible sur tous les forfaits. Le forfait Free Forever est limité à 100 appels MCP par période glissante de 24 heures ; chaque appel d’outil compte. La liste ci-dessous décrit le catalogue MCP publié par ClickUp : les droits de l’utilisateur, les fonctions activées dans le Workspace et la disponibilité du client IA peuvent réduire ce qui fonctionne en pratique."
+    },
+    {
+      "type": "list",
+      "items": [
+        "Recherche : recherche dans l’espace de travail et recherche de tâches par étiquette.",
+        "Tâches : créer, lire, filtrer, mettre à jour, déplacer, supprimer, fusionner, ajouter à une autre Liste ou retirer d’une Liste ; modifier les champs personnalisés.",
+        "Liens et étiquettes : créer ou retirer des dépendances, des liens entre tâches et des étiquettes de tâche ou d’Espace.",
+        "Suivi du temps : démarrer/arrêter un chronomètre, ajouter ou lire des entrées, vérifier le temps courant et le temps passé dans un statut.",
+        "Pièces jointes : demander un lien d’envoi, joindre un fichier à une tâche et télécharger une pièce jointe.",
+        "Commentaires : lire les commentaires et fils, en créer, modifier, résoudre, réassigner ou supprimer.",
+        "Documents : créer un Doc, lister et lire ses pages, créer ou modifier une page, lister ou télécharger ses pièces jointes.",
+        "Chat : lister les canaux, lire les messages et réponses, envoyer ou modifier un message et réagir avec un emoji.",
+        "Hiérarchie et membres : lire Espaces/Dossiers/Listes, créer ou modifier Dossiers et Listes, consulter les membres et résoudre un assigné.",
+        "Rappels et opérations avancées : créer/modifier/rechercher ses rappels, consulter le schéma, les opérateurs et effectuer certaines opérations groupées, statuts, vues ou formulaires."
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Le catalogue exact peut évoluer. Les outils de suppression, publication de commentaires/messages, envoi de fichiers, fusion ou mise à jour remplacent ou modifient des données : vérifiez la cible et le contenu avant de confirmer."
+    },
+    {
+      "type": "link",
+      "text": "Liste officielle ClickUp des outils MCP pris en charge",
+      "url": "https://developer.clickup.com/docs/mcp-tools"
+    },
+    {
+      "type": "link",
+      "text": "Présentation officielle du MCP ClickUp et limites par forfait",
+      "url": "https://help.clickup.com/hc/en-us/articles/33335772678423-What-is-ClickUp-MCP"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Créer un Workspace et une tâche — procédures officielles reformulées"
+    },
+    {
+      "type": "paragraph",
+      "text": "Workspace : cliquez sur l’avatar du Workspace en haut à gauche, puis sur « Create Workspace ». Autre chemin : avatar personnel > Settings > Workspaces > Add new. Toute personne peut créer un Workspace ; celui-ci contient les Espaces, Dossiers, Listes et tâches."
+    },
+    {
+      "type": "link",
+      "text": "Source officielle : créer un Workspace ClickUp",
+      "url": "https://help.clickup.com/hc/en-us/articles/6310502590487-Create-a-new-Workspace"
+    },
+    {
+      "type": "paragraph",
+      "text": "Tâche : depuis la barre d’outils, choisissez « Create task », saisissez un nom, ajoutez au besoin les détails, puis sélectionnez « Create Task ». Le nom et la Liste de destination sont les seuls éléments obligatoires ; statut, responsable, description et date d’échéance sont facultatifs."
+    },
+    {
+      "type": "paragraph",
+      "text": "Autre chemin officiel : dans la navigation globale, ouvrez Accueil, Espaces ou Planner ; cliquez sur le bouton + en haut de la barre latérale puis choisissez Task. La confirmation permet ensuite d’ouvrir la tâche ou de copier son lien."
+    },
+    {
+      "type": "link",
+      "text": "Source officielle : créer une tâche ClickUp",
+      "url": "https://help.clickup.com/hc/en-us/articles/6309647350807-Create-a-task"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Interfaçage ChatGPT–ClickUp : 30 lignes d’évaluation et de manipulations"
+    },
+    {
+      "type": "paragraph",
+      "text": "Les lignes 1 à 10 testent l’application ClickUp dans ChatGPT ; les lignes 11 à 18 clarifient la limite MCP de ChatGPT gratuit ; les lignes 19 à 24 donnent un flux manuel immédiatement utilisable ; les lignes 25 à 30 décrivent l’accès complet lorsqu’un forfait compatible est disponible."
+    },
+    {
+      "type": "list",
+      "ordered": true,
+      "items": [
+        "Application ClickUp officielle : dans ChatGPT, ouvrez Apps et recherchez « ClickUp ».",
+        "Si elle apparaît, ouvrez sa fiche, vérifiez les capacités et les permissions indiquées, puis sélectionnez Connect.",
+        "Cliquez sur Connect ClickUp et connectez-vous au compte ClickUp qui possède les données voulues.",
+        "Examinez l’autorisation OAuth ; sélectionnez uniquement le ou les Workspaces utiles.",
+        "Validez Connect Workspace et retournez dans ChatGPT avec Start Chat ou en sélectionnant l’application dans +.",
+        "Essayez une lecture sans effet : « Liste mes tâches en retard dans le Workspace X » et vérifiez les liens renvoyés.",
+        "Essayez ensuite une création contrôlée : « Crée une tâche test dans la Liste X, sans l’assigner » ; ouvrez ClickUp pour confirmer.",
+        "Si ClickUp n’apparaît pas dans Apps ou si Connect est indisponible, ce chemin ne fonctionne pas pour ce compte/forfait/région.",
+        "Pour déconnecter ou renouveler l’accès : Apps > ClickUp > paramètres/… > Disconnect ou Reconnect ; l’accès effectif dépend des disponibilités des Apps ChatGPT.",
+        "MCP personnalisé dans ChatGPT : le serveur ClickUp est https://mcp.clickup.com/mcp et utilise OAuth, sans clé API ClickUp personnelle.",
+        "Les instructions OpenAI actuelles réservent l’installation de serveurs MCP personnalisés aux forfaits et rôles compatibles.",
+        "Le forfait gratuit ChatGPT ne permet pas de supposer que l’on peut ajouter librement ce serveur depuis les réglages.",
+        "OpenAI indique aussi que le plein MCP est réservé à Business/Enterprise/Edu ; Pro peut connecter des MCP personnalisés en lecture seule.",
+        "Donc, depuis ChatGPT gratuit, ne créez pas de configuration JSON ou d’URL MCP en imaginant qu’elle sera prise en charge.",
+        "Dans Apps, vérifiez la disponibilité ClickUp pour le compte réel : le catalogue peut proposer un connecteur officiel utilisable sans configurer un MCP soi-même.",
+        "Si l’application connectée offre seulement la recherche, limitez-vous à lire ou résumer les éléments qu’elle expose.",
+        "Si elle est absente ou si ses actions d’écriture sont bloquées, utilisez l’un des flux manuels ci-dessous ou un client MCP compatible.",
+        "Flux manuel de lecture : dans ClickUp Web, ouvrez une Liste et copiez les tâches ou exportez les données permises par votre compte.",
+        "Dans ChatGPT, joignez le fichier ou collez les lignes utiles, puis demandez un tri, un résumé ou une proposition de priorités.",
+        "Demandez un résultat vérifiable : nom de tâche, statut, échéance, responsable et lien si vous l’avez inclus dans l’extrait.",
+        "Relisez les propositions dans ChatGPT, puis revenez dans ClickUp et créez/modifiez chaque tâche depuis la barre + ou Create task.",
+        "Flux manuel de création : demandez à ChatGPT un titre, une description, une échéance et une Liste cible au format tableau.",
+        "Dans ClickUp, choisissez Create task, copiez les champs validés, sélectionnez la Liste, puis cliquez Create Task.",
+        "Pour un véritable MCP dans un client compatible : ouvrez ses réglages MCP, ajoutez https://mcp.clickup.com/mcp et choisissez OAuth.",
+        "Lancez la connexion puis autorisez ClickUp ; le serveur renvoie la liste d’outils offerte à l’utilisateur authentifié.",
+        "Commencez par des appels de lecture : hiérarchie, recherche, tâche, commentaires ou documents auxquels vous avez accès.",
+        "Pour écrire, formulez la Liste exacte et les champs ; contrôlez le résumé de l’action avant de lancer création, commentaire ou mise à jour.",
+        "La permission ClickUp de l’utilisateur s’applique ; un MCP ne donne pas de droits supplémentaires et chaque appel consomme le quota ClickUp.",
+        "Sans module officiel disponible dans ChatGPT gratuit, ce flux MCP dans un autre client ne constitue pas un interfaçage ChatGPT.",
+        "Conclusion : pour ChatGPT gratuit, vérifiez d’abord Apps ; sinon, le flux fiable est copier/analyser dans ChatGPT puis appliquer manuellement dans ClickUp."
+      ]
+    },
+    {
+      "type": "link",
+      "text": "Configuration ClickUp officielle dans ChatGPT et étapes OAuth",
+      "url": "https://developer.clickup.com/docs/connect-an-ai-assistant-to-clickups-mcp-server-1"
+    },
+    {
+      "type": "link",
+      "text": "OpenAI : connexion de serveurs MCP personnalisés dans ChatGPT",
+      "url": "https://help.openai.com/en/articles/12584461-connecting-custom-mcp-servers-in-chatgpt"
+    },
+    {
+      "type": "link",
+      "text": "OpenAI : disponibilité et dépannage des Apps selon le compte et le forfait",
+      "url": "https://help.openai.com/en/articles/20001497-troubleshooting-plugins-and-apps-in-chatgpt"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Sources officielles consultées"
+    },
+    {
+      "type": "list",
+      "items": [
+        "ClickUp Help Center : inscription, Workspaces, tâches, navigation, applications mobiles et serveur MCP.",
+        "ClickUp Developer Documentation : configuration des assistants et inventaire des outils pris en charge.",
+        "OpenAI Help Center : connexion de serveurs MCP personnalisés et disponibilité des Apps."
+      ]
+    }
+  ]
+}
