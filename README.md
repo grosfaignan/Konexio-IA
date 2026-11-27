@@ -35,6 +35,10 @@ Les données d’en-tête et de pied de page des documents sont maintenues dans 
 
 Alpine.js pilote les composants d’interface du catalogue (recherche, filtre, aperçu et actions de téléchargement). Eta rend le HTML de l’aperçu et du fichier téléchargé depuis la même source JSON.
 
+## Styles Bootstrap et Bootswatch
+
+L’interface utilise Bootstrap 5 et le thème Minty de Bootswatch. Le balisage s’appuie sur les composants et utilitaires Bootstrap ; `assets/site.css` ne contient que quelques règles d’assemblage et reprend les variables Bootstrap du thème actif. Pour essayer un autre thème Bootswatch de la série 5.3.8, remplacez `minty` dans les feuilles CSS de `index.html` et `templates/page.eta` par son identifiant, par exemple `flatly`, `darkly` ou `cosmo`. Le HTML téléchargé reprend le même thème.
+
 ## Développement local
 
 ```powershell

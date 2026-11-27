@@ -4,13 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><%= it.document.title %></title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.8/dist/minty/bootstrap.min.css">
   <style>
-    :root{color-scheme:light}*{box-sizing:border-box}body{max-width:800px;margin:54px auto;padding:0 28px;color:#18251f;font:17px/1.7 Georgia,"Times New Roman",serif}.document-header{margin-bottom:42px;padding-bottom:23px;border-bottom:1px solid #dce4de}.document-eyebrow,.document-category,.document-description,.document-footer{font-family:system-ui,sans-serif}.document-eyebrow{margin:0 0 30px;color:#65716b;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.document-category{color:#35634e;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}.document-header h1{font-size:42px;line-height:1.1;letter-spacing:-.04em}.document-description{color:#65716b;font-size:16px;line-height:1.6}.document-paragraph,blockquote{white-space:pre-wrap}h2,h3{margin-top:1.8em;font-family:system-ui,sans-serif;line-height:1.25}h2{font-size:25px}h3{font-size:20px}blockquote{margin:24px 0;padding:4px 0 4px 20px;border-left:3px solid #d76545;color:#536259}pre{overflow:auto;padding:18px;background:#f1f4f1;border-radius:6px;font:14px/1.6 ui-monospace,monospace}li{margin:.45em 0}hr{margin:30px 0;border:0;border-top:1px solid #dce4de}.document-footer{display:flex;justify-content:space-between;gap:14px;margin-top:52px;padding-top:14px;border-top:1px solid #dce4de;color:#65716b;font-size:11px}@media(max-width:600px){body{margin:32px auto;padding:0 20px}.document-header h1{font-size:34px}.document-footer{flex-direction:column}}@media print{body{margin:22mm auto}}
+    .document-paragraph,.document-quote{white-space:pre-wrap}pre{overflow:auto}footer{font-size:.875rem}
+    @media print{.container{max-width:none!important}.document-footer{break-inside:avoid}}
   </style>
 </head>
-<body>
-  <%~ include("@header", it.header) %>
-  <main><%~ include("@blocks", { blocks: it.content }) %></main>
-  <%~ include("@footer", it.footer) %>
+<body class="bg-body text-body">
+  <main class="container py-5">
+    <%~ include("@header", it.header) %>
+    <article class="mt-4"><%~ include("@blocks", { blocks: it.content }) %></article>
+    <%~ include("@footer", it.footer) %>
+  </main>
 </body>
 </html>

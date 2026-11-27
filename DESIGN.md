@@ -6,10 +6,10 @@ Une petite médiathèque pour les supports de formation à l’IA. La page aide 
 
 ## Visual direction
 
-- Palette : encre forêt `#14231F`, papier froid `#F5F7F4`, sauge `#E5EEE8`, corail signal `#D76545`, gris lecture `#65716B`.
-- Typographie : titres en Georgia, texte et commandes avec les polices système sans sérif. Pas de dépendance distante.
-- Mise en page : catalogue éditorial, avec une colonne de repères de format et une liste de fiches compacte.
-- Signature : le choix du format est visible sur chaque fiche, comme un petit sélecteur d’outils, plutôt qu’un bouton de téléchargement générique.
+- Base visuelle : Bootstrap 5 avec le thème Minty de Bootswatch. Les classes Bootstrap et les variables `--bs-*` gardent l’interface compatible avec les thèmes Bootswatch.
+- Mise en page : catalogue responsive construit avec la grille et les composants Bootstrap.
+- Signature : les boutons de téléchargement restent dans le bandeau de l’aperçu ; la fiche du catalogue ouvre l’aperçu HTML.
+- `assets/site.css` ne redéfinit pas la palette du thème ; il règle seulement le bandeau collant, la hauteur de l’aperçu et l’affichage avant Alpine.
 
 ## Interaction contract
 

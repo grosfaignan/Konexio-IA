@@ -1,4 +1,4 @@
-<footer class="document-footer">
+<footer class="border-top mt-5 pt-3 d-flex flex-column flex-sm-row justify-content-between gap-2 small text-body-secondary">
   <span><%= it.note %></span>
   <span><%= it.sourceLabel %></span>
 </footer>
