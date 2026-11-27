@@ -6,42 +6,38 @@
   <meta name="description" content="Trouvez une ressource pédagogique et téléchargez-la dans le format qui vous convient.">
   <title>Ressources téléchargeables</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.8/dist/yeti/bootstrap.min.css">
-  <link rel="stylesheet" href="assets/site.css?v=4">
+  <link rel="stylesheet" href="assets/site.css?v=5">
   <script src="assets/generator.js?v=3" defer></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.17.5/dist/cdn.min.js"></script>
 </head>
 <body x-data="library" class="min-vh-100 d-flex flex-column bg-body">
-  <header class="border-bottom bg-body">
-    <div class="container py-3 d-flex align-items-center justify-content-between gap-3">
-      <a class="navbar-brand fw-semibold m-0" href="./" aria-label="Accueil">Médiathèque</a>
-      <span class="small text-body-secondary"><a href="#library-title" x-show="!selectedDocument">Catalogue</a></span>
-    </div>
+  <header class="sticky-top border-bottom bg-body shadow-sm">
+    <nav class="container library-nav" aria-label="Navigation principale">
+      <a class="navbar-brand fw-semibold m-0" href="./"><span aria-hidden="true">📚</span> Médiathèque</a>
+      <a href="#library-title" x-show="!selectedDocument">Catalogue</a>
+      <button type="button" class="back-button btn btn-link" x-show="selectedDocument" x-cloak @click="closePreview()">← Catalogue</button>
+      <div class="header-downloads" x-show="selectedDocument" x-cloak>
+        <div class="download-actions" role="group" aria-label="Téléchargements">
+            <template x-for="format in formats" :key="format.id">
+              <button type="button" class="btn btn-outline-primary btn-sm" :disabled="busyFormat !== null"
+                :aria-label="'Télécharger ' + selectedDocument?.title + ' en ' + format.name" @click="download(selectedDocument, format.id)">
+                <svg aria-hidden="true" width="18" height="18"><use :href="'assets/formats.svg#' + format.id"></use></svg>
+                <span x-text="format.label"></span>
+              </button>
+            </template>
+          </div>
+      </div>
+    </nav>
   </header>
 
   <main class="container flex-grow-1 py-3">
-    <section id="document-banner" class="document-banner card shadow-sm mb-3" x-show="selectedDocument" aria-label="Téléchargement du document" x-cloak>
-      <div class="card-body">
-        <button class="back-button btn btn-link link-primary text-decoration-none p-0 mb-3" type="button" @click="closePreview()">← Toutes les ressources</button>
-        <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
-          <div class="min-w-0">
-            <span class="badge text-bg-primary" x-text="selectedDocument?.category"></span>
-            <h2 class="h4 mt-2 mb-0 text-break" x-text="selectedDocument?.title"></h2>
-          </div>
-          <div class="d-flex flex-wrap gap-2" :aria-label="`Télécharger ${selectedDocument?.title || 'le document'}`">
-            <template x-for="format in formats" :key="format.id">
-              <button class="btn btn-sm" :class="format.id === 'pdf' ? 'btn-primary' : 'btn-outline-primary'" type="button" :data-format="format.id" :disabled="busyFormat !== null" :aria-label="`Télécharger « ${selectedDocument?.title} » en ${format.name}`" :title="`Télécharger en ${format.name}`" x-text="busyFormat === format.id ? '…' : format.label" @click="download(selectedDocument, format.id)"></button>
-            </template>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <p id="status" class="alert py-2 px-3 small mb-3" role="status" aria-live="polite" :class="hasError ? 'alert-danger' : 'visually-hidden'" x-text="status">Chargement du catalogue…</p>
 
     <div id="catalogue-view" x-show="!selectedDocument" x-cloak>
       <section class="library-intro" aria-labelledby="page-title">
-        <h1 id="page-title">Ressources pédagogiques</h1>
-        <p>Ouvrez un document pour le lire ou le télécharger en PDF, Word, HTML ou Markdown.</p>
+        <div><h1 id="page-title">Ressources pédagogiques</h1>
+        <p>Ouvrez un document pour le lire ou le télécharger en PDF, Word, HTML ou Markdown.</p></div>
+        <img src="assets/reading.jpg" alt="" class="reading-photo">
       </section>
       <section class="border-top pt-4 pb-5" aria-labelledby="library-title">
         <div class="d-flex align-items-end justify-content-between gap-3 mb-3">
@@ -77,8 +73,17 @@
                 <div class="d-flex flex-wrap align-items-center gap-2 small text-body-secondary mb-2">
                   <span class="badge text-bg-primary" x-text="item.category"></span>
                 </div>
-                <h3 class="card-title h5 mb-2"><button class="resource-title stretched-link" type="button" :aria-label="`Afficher l’aperçu HTML de « ${item.title} »`" @click="openPreview(item, $event.currentTarget)" x-text="item.title"></button></h3>
+                <h3 class="card-title h5 mb-2"><button class="resource-title" type="button" :aria-label="`Afficher l’aperçu HTML de « ${item.title} »`" @click="openPreview(item, $event.currentTarget)" x-text="item.title"></button></h3>
                 <p class="card-text text-body-secondary mb-0" x-text="item.description"></p>
+                <div class="download-actions" role="group" aria-label="Téléchargements">
+            <template x-for="format in formats" :key="format.id">
+              <button type="button" class="btn btn-outline-primary btn-sm" :disabled="busyFormat !== null"
+                :aria-label="'Télécharger ' + item?.title + ' en ' + format.name" @click="download(item, format.id)">
+                <svg aria-hidden="true" width="18" height="18"><use :href="'assets/formats.svg#' + format.id"></use></svg>
+                <span x-text="format.label"></span>
+              </button>
+            </template>
+          </div>
               </div>
             </article>
           </template>
