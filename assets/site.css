@@ -18,3 +18,34 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
+
+.library-intro {
+  margin-block: 1rem 2rem;
+  padding: clamp(1.5rem, 5vw, 4rem);
+  border-inline-start: .35rem solid var(--bs-primary);
+  background: linear-gradient(110deg, rgba(var(--bs-primary-rgb), .12), rgba(var(--bs-primary-rgb), .02));
+}
+.library-intro h1 {
+  font-size: clamp(2.15rem, 5vw, 4rem);
+  font-weight: 600;
+  letter-spacing: -.045em;
+  line-height: 1.08;
+}
+.library-intro p { max-width: 54ch; margin: 1rem 0 0; font-size: 1.1rem; }
+.resource-card { border-inline-start: .25rem solid var(--bs-primary); }
+.resource-card .card-body { padding: clamp(1.25rem, 3vw, 2rem); }
+.resource-card .card-text { max-width: 70ch; }
+.resource-title {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: var(--bs-emphasis-color);
+  font: inherit;
+  font-weight: 600;
+  text-align: start;
+  text-decoration: underline;
+  text-decoration-color: rgba(var(--bs-primary-rgb), .45);
+  text-underline-offset: .18em;
+}
+.resource-card:hover, .resource-card:focus-within { border-color: var(--bs-primary); }
+.document-banner .btn-sm { min-height: 2.5rem; padding-inline: .85rem; }
