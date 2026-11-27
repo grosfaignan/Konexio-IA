@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><%= it.document.title %></title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.8/dist/darkly/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.8/dist/yeti/bootstrap.min.css">
   <style>
     .document-paragraph,.document-quote{white-space:pre-wrap}pre{overflow:auto}footer{font-size:.875rem}
     @media print{.container{max-width:none!important}.document-footer{break-inside:avoid}}

@@ -2,10 +2,9 @@
   <% if (block.type === "heading") { %><h<%= block.level %> class="mt-4 mb-3"><%= block.text %></h<%= block.level %>><% } %>
   <% if (block.type === "paragraph") { %><p class="document-paragraph mb-3"><%= block.text %></p><% } %>
   <% if (block.type === "quote") { %><blockquote class="document-quote blockquote border-start border-4 border-primary ps-3 my-4"><p><%= block.text %></p></blockquote><% } %>
-  <% if (block.type === "code") { %><pre class="bg-dark text-light border rounded p-3 mb-3"><code><%= block.text %></code></pre><% } %>
+  <% if (block.type === "code") { %><pre class="bg-body-tertiary text-body border rounded p-3 mb-3"><code><%= block.text %></code></pre><% } %>
   <% if (block.type === "list") { %>
     <% if (block.ordered) { %><ol class="mb-3 ps-4"><% block.items.forEach((item) => { %><li class="mb-2"><%= item %></li><% }) %></ol><% } else { %><ul class="mb-3 ps-4"><% block.items.forEach((item) => { %><li class="mb-2"><%= item %></li><% }) %></ul><% } %>
   <% } %>
   <% if (block.type === "separator") { %><hr class="my-4"><% } %>
 <% }) %>
-

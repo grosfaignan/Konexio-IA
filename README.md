@@ -37,7 +37,7 @@ Alpine.js pilote les composants d’interface du catalogue (recherche, filtre, a
 
 ## Styles Bootstrap et Bootswatch
 
-L’interface utilise Bootstrap 5 et le thème Darkly de Bootswatch. Le balisage s’appuie sur les composants et utilitaires Bootstrap ; `assets/site.css` ne contient que quelques règles d’assemblage et reprend les variables Bootstrap du thème actif. Pour essayer un autre thème Bootswatch de la série 5.3.8, remplacez `darkly` dans les feuilles CSS de `index.html` et `templates/page.eta` par son identifiant, par exemple `flatly`, `minty` ou `cosmo`. Le HTML téléchargé reprend le même thème.
+L’interface utilise Bootstrap 5 et le thème Yeti de Bootswatch. Le balisage s’appuie sur les composants et utilitaires Bootstrap ; `assets/site.css` ne contient que quelques règles d’assemblage et reprend les variables Bootstrap du thème actif. Pour essayer un autre thème Bootswatch de la série 5.3.8, remplacez `yeti` dans les feuilles CSS de `index.html` et `templates/page.eta` par son identifiant, par exemple `flatly`, `minty` ou `cosmo`. Le HTML téléchargé reprend le même thème.
 
 ## Développement local
 
