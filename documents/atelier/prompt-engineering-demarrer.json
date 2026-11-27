@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "title": "Bien formuler ses prompts : les bases du prompt engineering",
+  "description": "Une méthode pratique pour obtenir des réponses plus utiles, précises et faciles à réutiliser avec une IA générative.",
+  "category": "Intelligence artificielle",
+  "filename": "bien-formuler-ses-prompts",
+  "content": [
+    {
+      "type": "paragraph",
+      "text": "Le prompt engineering, ou conception de prompts, consiste à formuler une demande pour aider un modèle d’IA à comprendre la tâche, le contexte et le résultat attendu. Il ne s’agit pas de trouver une formule magique : les meilleurs résultats viennent généralement d’instructions claires, d’informations pertinentes et d’ajustements successifs."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "1. Définir le résultat avant d’écrire"
+    },
+    {
+      "type": "paragraph",
+      "text": "Avant de rédiger, demandez-vous : qu’est-ce que je veux obtenir, pour qui, et à quoi reconnaîtrai-je une bonne réponse ? Précisez l’objectif, le public, le contexte utile, le ton, la longueur et le format lorsque ces éléments comptent."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "2. Donner une consigne précise et directe"
+    },
+    {
+      "type": "paragraph",
+      "text": "Utilisez un verbe d’action et décrivez la tâche sans ambiguïté : résumer, comparer, reformuler, classer, expliquer, extraire ou rédiger. Remplacez les demandes vagues comme « fais quelque chose d’intéressant » par des consignes observables. Si plusieurs étapes ou critères sont importants, énumérez-les."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "3. Fournir le contexte et les bons éléments"
+    },
+    {
+      "type": "paragraph",
+      "text": "Ajoutez les informations qui changent réellement la réponse : situation, public, objectif, contraintes, données ou documents de référence. Ne supposez pas que le modèle connaît vos besoins, votre organisation ou les détails d’un document qui n’a pas été fourni. Pour une tâche fondée sur des sources, joignez les sources pertinentes et demandez que les affirmations importantes s’appuient sur celles-ci."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "4. Spécifier la forme de la réponse"
+    },
+    {
+      "type": "paragraph",
+      "text": "Indiquez la forme directement exploitable : nombre de points, tableau, courriel, plan, liste d’actions, texte en langage simple ou données JSON. Ajoutez les contraintes utiles, par exemple une limite de longueur, une langue, un ton ou des éléments à inclure. Pour une réponse structurée, un petit exemple de sortie peut lever les ambiguïtés."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "5. Séparer la consigne des documents fournis"
+    },
+    {
+      "type": "paragraph",
+      "text": "Quand le prompt contient un texte à analyser, délimitez-le clairement avec des titres, des guillemets ou des balises. Distinguer la consigne du contenu réduit les confusions, surtout dans les prompts longs. Cette séparation aide à structurer la demande, mais ne remplace pas les précautions nécessaires lorsqu’on traite des contenus non fiables."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "6. Ajouter des exemples quand le format est difficile à décrire"
+    },
+    {
+      "type": "paragraph",
+      "text": "Un ou plusieurs exemples de bonne entrée et de bonne sortie peuvent montrer le ton, le niveau de détail ou la structure souhaitée. Choisissez des exemples proches de la tâche réelle et assez variés pour éviter que le modèle ne reproduise un détail accidentel. Pour une demande simple, un exemple n’est pas toujours nécessaire."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "7. Décomposer les tâches complexes"
+    },
+    {
+      "type": "paragraph",
+      "text": "Pour une demande comportant plusieurs objectifs, faites procéder par étapes : analyser les informations, relever les points importants, puis produire le livrable. Lorsque chaque étape dépend d’une décision ou d’une vérification, examinez le résultat intermédiaire avant de continuer. Une demande plus longue n’est pas automatiquement meilleure : gardez les éléments utiles et retirez les consignes contradictoires ou répétées."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "8. Prévoir les informations manquantes et l’incertitude"
+    },
+    {
+      "type": "paragraph",
+      "text": "Dites au modèle quoi faire s’il manque une information : poser une question, signaler l’incertitude, ou utiliser une mention comme « non précisé ». Pour les faits importants, demandez des références vérifiables et contrôlez-les. Un prompt bien écrit ne garantit pas que toutes les réponses seront exactes."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "9. Améliorer le prompt par itérations"
+    },
+    {
+      "type": "paragraph",
+      "text": "Lisez la réponse et repérez précisément ce qui manque ou gêne : trop longue, trop générale, mauvais format, oubli d’un critère ou information non étayée. Modifiez une consigne à la fois, puis comparez les résultats. Pour un usage régulier, testez le prompt sur plusieurs exemples représentatifs, y compris des cas limites."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "10. Utiliser les rôles et les techniques avancées avec mesure"
+    },
+    {
+      "type": "paragraph",
+      "text": "Un rôle comme « tu es un formateur qui s’adresse à des débutants » peut aider à cadrer le ton et le point de vue, mais il ne remplace ni le contexte ni les critères de réussite. Les balises, les exemples multiples et les chaînes de prompts peuvent aider pour des tâches longues ou répétitives. Leur utilité dépend du modèle et du cas d’usage : gardez-les seulement si elles améliorent les résultats observés."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Exemple : transformer une demande vague"
+    },
+    {
+      "type": "code",
+      "text": "Demande vague :\nParle-moi de l’intelligence artificielle.\n\nDemande mieux cadrée :\nContexte : je prépare une séance de 20 minutes pour des adultes qui découvrent l’intelligence artificielle générative.\nTâche : explique en termes simples ce qu’est un modèle de langage et donne trois exemples d’usages quotidiens.\nFormat : un texte de 250 mots maximum, avec un titre et une liste de trois exemples.\nPrécaution : distingue les capacités du modèle de ses limites et n’invente pas de chiffres. Si un point dépend d’une information récente, signale-le."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Un canevas à réutiliser"
+    },
+    {
+      "type": "code",
+      "text": "Contexte : [situation, public et informations utiles]\nTâche : [action précise à réaliser]\nRésultat attendu : [contenu et critères de réussite]\nFormat : [structure, longueur, ton et langue]\nContraintes : [éléments à inclure ou à éviter]\nEn cas d’incertitude : [poser une question, indiquer ce qui manque ou ne pas deviner]\n\nVoici le contenu à traiter :\n[insérer le texte ou les données]"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "À retenir"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Commencez par clarifier la tâche et le résultat attendu.",
+        "Donnez le contexte et les sources dont l’IA a besoin.",
+        "Précisez le format, le public et les contraintes utiles.",
+        "Ajoutez des exemples pour lever une ambiguïté de ton ou de structure.",
+        "Relisez, vérifiez les faits importants et améliorez le prompt par petites étapes."
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Pour aller plus loin"
+    },
+    {
+      "type": "list",
+      "items": [
+        "OpenAI, Bonnes pratiques pour l’ingénierie des prompts : https://help.openai.com/en/articles/6654000-best-practices-for-prompt-engineering-with-the-openai-api",
+        "OpenAI, Guide pratique de prompt engineering pour les usages quotidiens : https://developers.openai.com/cookbook/examples/chatgpt/chatgpt_prompt_guide/chatgpt_prompt_guide",
+        "Anthropic, Prompt engineering : bonnes pratiques : https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+      ]
+    }
+  ]
+}
