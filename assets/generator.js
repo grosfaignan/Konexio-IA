@@ -65,7 +65,7 @@ async function loadTemplates() {
     return response.headers.get("content-type")?.includes("json") ? response.json() : response.text();
   };
   [pageTemplate, headerTemplate, footerTemplate, blocksTemplate, headerData, footerData, downloadFormats] = await Promise.all([
-    read("templates/page.eta"), read("templates/header.eta"), read("templates/footer.eta"), read("templates/blocks.eta"),
+    read("templates/page.eta?v=3"), read("templates/header.eta"), read("templates/footer.eta"), read("templates/blocks.eta?v=3"),
     read("data/header.json"), read("data/footer.json"), read("data/components/downloads.json"),
   ]);
   eta.loadTemplate("@page", pageTemplate);
@@ -393,5 +393,4 @@ document.addEventListener("alpine:init", () => {
     },
   }));
 });
-
 
