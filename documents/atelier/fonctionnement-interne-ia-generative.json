@@ -21,7 +21,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Le diagramme sépare la préparation du modèle, qui se fait avant son utilisation, du traitement d’une demande au moment de l’inférence. Une application peut ajouter des instructions, des documents de référence ou des outils autour du modèle, puis contrôler et présenter sa sortie."
+      "text": "Le graphe distingue l’entraînement du modèle du traitement d’une demande en production. Il représente un modèle de langage autorégressif de type Transformer : les détails varient selon les modèles et l’application. Les mécanismes ont été confrontés à des articles publiés dans des actes scientifiques évalués par les pairs. Cliquez sur un nœud pour ouvrir sa référence; une liste accessible au clavier est également disponible."
     },
     {
       "type": "diagram",
@@ -29,133 +29,166 @@
       "nodes": [
         {
           "id": "corpus",
-          "label": "Corpus\ntextes et médias"
+          "label": "Corpus d’entraînement\ntextes sélectionnés",
+          "reference": "Brown et al. (2020) — Language Models are Few-Shot Learners, NeurIPS",
+          "url": "https://proceedings.neurips.cc/paper_files/paper/2020/hash/1457c0d6bfcb4967418bfb8ac142f64a-Abstract.html"
         },
         {
           "id": "preparation",
-          "label": "Filtrer, dédupliquer\net tokeniser"
+          "label": "Préparer les textes\nfiltrer et dédupliquer",
+          "reference": "Lee et al. (2022) — Deduplicating Training Data Makes Language Models Better, ACL",
+          "url": "https://aclanthology.org/2022.acl-long.577/"
         },
         {
           "id": "pretraining",
-          "label": "Préentraînement\nprédire le token suivant"
+          "label": "Préentraînement\nprédire le token suivant",
+          "reference": "Brown et al. (2020) — Language Models are Few-Shot Learners, NeurIPS",
+          "url": "https://proceedings.neurips.cc/paper_files/paper/2020/hash/1457c0d6bfcb4967418bfb8ac142f64a-Abstract.html"
         },
         {
           "id": "optimization",
-          "label": "Erreur + gradient\najuster les poids"
+          "label": "Erreur + gradient\najuster les poids",
+          "reference": "Kingma et Ba (2015) — Adam: A Method for Stochastic Optimization, ICLR",
+          "url": "https://openreview.net/forum?id=8gmWwjFyLj"
         },
         {
           "id": "alignment",
-          "label": "Suivi des consignes\net évaluations"
+          "label": "Suivi des consignes\net évaluations",
+          "reference": "Ouyang et al. (2022) — Training language models to follow instructions with human feedback, NeurIPS",
+          "url": "https://proceedings.neurips.cc/paper_files/paper/2022/hash/b1efde53be364a73914f58805a001731-Abstract-Conference.html"
         },
         {
           "id": "weights",
-          "label": "Paramètres appris\nmodèle déployé"
+          "label": "Paramètres appris\nmodèle déployé",
+          "reference": "Brown et al. (2020) — Language Models are Few-Shot Learners, NeurIPS",
+          "url": "https://proceedings.neurips.cc/paper_files/paper/2020/hash/1457c0d6bfcb4967418bfb8ac142f64a-Abstract.html"
         },
         {
           "id": "user_message",
-          "label": "Message utilisateur"
+          "label": "Message utilisateur",
+          "reference": "Brown et al. (2020) — Language Models are Few-Shot Learners, NeurIPS",
+          "url": "https://proceedings.neurips.cc/paper_files/paper/2020/hash/1457c0d6bfcb4967418bfb8ac142f64a-Abstract.html"
         },
         {
           "id": "context",
-          "label": "Composer le contexte\ninstructions + historique"
+          "label": "Composer le contexte\ninstructions + historique",
+          "reference": "Liu et al. (2024) — Lost in the Middle: How Language Models Use Long Contexts, TACL",
+          "url": "https://aclanthology.org/2024.tacl-1.9/"
         },
         {
           "id": "knowledge",
-          "label": "Sources externes\nWeb ou documents"
+          "label": "Sources externes\nWeb ou documents",
+          "reference": "Lewis et al. (2020) — Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks, NeurIPS",
+          "url": "https://papers.nips.cc/paper/2020/hash/6b493230205f780e1bc26945df7481e5-Abstract.html"
         },
         {
           "id": "retrieval",
-          "label": "Recherche / RAG\npassages pertinents"
+          "label": "Recherche / RAG\npassages pertinents",
+          "reference": "Lewis et al. (2020) — Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks, NeurIPS",
+          "url": "https://papers.nips.cc/paper/2020/hash/6b493230205f780e1bc26945df7481e5-Abstract.html"
         },
         {
           "id": "tokenize",
-          "label": "Token IDs + vecteurs\net information de position"
-        },
-        {
-          "id": "transformer",
-          "label": "Couches Transformer\ncalcul causal répété"
+          "label": "Tokens et vecteurs\nIDs + positions",
+          "reference": "Sennrich et al. (2016) — Neural Machine Translation of Rare Words with Subword Units, ACL",
+          "url": "https://aclanthology.org/P16-1162/"
         },
         {
           "id": "attention",
-          "label": "Self-attention\nQ / K / V, masque causal"
+          "label": "Attention causale\nQ / K / V, masque futur",
+          "reference": "Vaswani et al. (2017) — Attention Is All You Need, NeurIPS",
+          "url": "https://proceedings.neurips.cc/paper_files/paper/2017/hash/3f5ee243547dee91fbd053c1c4a845aa-Abstract.html"
         },
         {
           "id": "mlp",
-          "label": "MLP, résidus\net normalisation"
+          "label": "MLP, résidus\net normalisation",
+          "reference": "Vaswani et al. (2017) — Attention Is All You Need, NeurIPS",
+          "url": "https://proceedings.neurips.cc/paper_files/paper/2017/hash/3f5ee243547dee91fbd053c1c4a845aa-Abstract.html"
         },
         {
           "id": "logits",
-          "label": "Tête de sortie\nscores des tokens"
+          "label": "Tête de sortie\nscores des tokens",
+          "reference": "Vaswani et al. (2017) — Attention Is All You Need, NeurIPS",
+          "url": "https://proceedings.neurips.cc/paper_files/paper/2017/hash/3f5ee243547dee91fbd053c1c4a845aa-Abstract.html"
         },
         {
           "id": "decoding",
-          "label": "Décodage\nprobabilités, température"
+          "label": "Décodage\nchoix ou échantillonnage",
+          "reference": "Holtzman et al. (2020) — The Curious Case of Neural Text Degeneration, ICLR",
+          "url": "https://openreview.net/forum?id=rygGQyrFvH"
         },
         {
           "id": "continue",
-          "label": "Continuer ?\ntoken choisi"
+          "label": "Fin ?\ntoken EOS ou limite",
+          "reference": "Brown et al. (2020) — Language Models are Few-Shot Learners, NeurIPS",
+          "url": "https://proceedings.neurips.cc/paper_files/paper/2020/hash/1457c0d6bfcb4967418bfb8ac142f64a-Abstract.html"
         },
         {
           "id": "append_token",
-          "label": "Ajouter le token\nau contexte"
+          "label": "Ajouter le token\nau contexte",
+          "reference": "Brown et al. (2020) — Language Models are Few-Shot Learners, NeurIPS",
+          "url": "https://proceedings.neurips.cc/paper_files/paper/2020/hash/1457c0d6bfcb4967418bfb8ac142f64a-Abstract.html"
         },
         {
           "id": "response",
-          "label": "Fin : filtres éventuels\net réponse affichée"
+          "label": "Réponse finale\ntraitement par l’application",
+          "reference": "Lin et al. (2022) — TruthfulQA: Measuring How Models Mimic Human Falsehoods, ACL",
+          "url": "https://aclanthology.org/2022.acl-long.229/"
         },
         {
           "id": "tool_call",
-          "label": "Appel d’outil\nstructuré"
+          "label": "Appel d’outil\nstructuré",
+          "reference": "Schick et al. (2023) — Toolformer: Language Models Can Teach Themselves to Use Tools, NeurIPS",
+          "url": "https://proceedings.neurips.cc/paper_files/paper/2023/hash/d842425e4bf79ba039352da0f658a906-Abstract-Conference.html"
         },
         {
           "id": "tool_execution",
-          "label": "Vérifier les droits\npuis exécuter"
+          "label": "L’application valide\net exécute l’appel",
+          "reference": "Ruan et al. (2024) — Identifying the Risks of LM Agents with an LM-Emulated Sandbox, ICLR",
+          "url": "https://proceedings.iclr.cc/paper_files/paper/2024/file/7274ed909a312d4d869cc328ad1c5f04-Paper-Conference.pdf"
         },
         {
           "id": "tool_result",
-          "label": "Résultat du calcul,\nde l’API ou de la recherche"
+          "label": "Observation de l’outil\nrenvoyée au modèle",
+          "reference": "Yao et al. (2023) — ReAct: Synergizing Reasoning and Acting in Language Models, ICLR",
+          "url": "https://openreview.net/forum?id=WE_vluYUL-X"
         }
       ],
       "edges": [
         {
           "from": "corpus",
           "to": "preparation",
-          "label": "préparer"
+          "label": "sélectionner et nettoyer"
         },
         {
           "from": "preparation",
           "to": "pretraining",
-          "label": "séquences"
+          "label": "textes tokenisés"
         },
         {
           "from": "pretraining",
           "to": "optimization",
-          "label": "prédiction"
+          "label": "perte prédictive"
         },
         {
           "from": "optimization",
           "to": "alignment",
-          "label": "poids ajustés"
+          "label": "poids pré-entraînés"
         },
         {
           "from": "alignment",
           "to": "weights",
-          "label": "modèle prêt"
+          "label": "paramètres ajustés"
         },
         {
           "from": "weights",
-          "to": "transformer",
-          "label": "poids servis"
+          "to": "attention",
+          "label": "poids du modèle"
         },
         {
           "from": "user_message",
           "to": "context",
           "label": "message"
-        },
-        {
-          "from": "context",
-          "to": "tokenize",
-          "label": "contexte prêt"
         },
         {
           "from": "knowledge",
@@ -165,27 +198,27 @@
         {
           "from": "retrieval",
           "to": "context",
-          "label": "ajouter les passages"
+          "label": "passages ajoutés"
+        },
+        {
+          "from": "context",
+          "to": "tokenize",
+          "label": "contexte assemblé"
         },
         {
           "from": "tokenize",
-          "to": "transformer",
-          "label": "entrée numérique"
-        },
-        {
-          "from": "transformer",
           "to": "attention",
-          "label": "représentations"
+          "label": "vecteurs en entrée"
         },
         {
           "from": "attention",
           "to": "mlp",
-          "label": "pondérer le contexte"
+          "label": "sortie attention"
         },
         {
           "from": "mlp",
           "to": "logits",
-          "label": "états calculés"
+          "label": "dernière couche"
         },
         {
           "from": "logits",
@@ -195,7 +228,7 @@
         {
           "from": "decoding",
           "to": "continue",
-          "label": "choisir un token"
+          "label": "token choisi"
         },
         {
           "from": "continue",
@@ -204,23 +237,23 @@
         },
         {
           "from": "append_token",
-          "to": "transformer",
-          "label": "nouvelle étape"
+          "to": "attention",
+          "label": "nouveau contexte"
         },
         {
           "from": "continue",
           "to": "response",
-          "label": "fin ou limite atteinte"
+          "label": "fin ou limite"
         },
         {
           "from": "decoding",
           "to": "tool_call",
-          "label": "appel structuré"
+          "label": "action structurée"
         },
         {
           "from": "tool_call",
           "to": "tool_execution",
-          "label": "autoriser et lancer"
+          "label": "contrôle applicatif"
         },
         {
           "from": "tool_execution",
@@ -230,7 +263,7 @@
         {
           "from": "tool_result",
           "to": "context",
-          "label": "réinjecter puis générer"
+          "label": "observation réinjectée"
         }
       ]
     },
@@ -330,22 +363,72 @@
     {
       "type": "heading",
       "level": 2,
-      "text": "Sources pour approfondir"
+      "text": "Publications scientifiques citées dans le diagramme"
     },
     {
       "type": "link",
-      "text": "Vaswani et al., Attention Is All You Need, 2017 — architecture Transformer",
-      "url": "https://arxiv.org/abs/1706.03762"
+      "text": "Lee et al. (2022), Deduplicating Training Data Makes Language Models Better — ACL 2022",
+      "url": "https://aclanthology.org/2022.acl-long.577/"
     },
     {
       "type": "link",
-      "text": "Brown et al., Language Models are Few-Shot Learners, 2020 — apprentissage autorégressif à grande échelle",
-      "url": "https://arxiv.org/abs/2005.14165"
+      "text": "Sennrich et al. (2016), Neural Machine Translation of Rare Words with Subword Units — ACL 2016",
+      "url": "https://aclanthology.org/P16-1162/"
     },
     {
       "type": "link",
-      "text": "OpenAI Tokenizer — aperçu du découpage du texte en tokens",
-      "url": "https://platform.openai.com/tokenizer"
+      "text": "Brown et al. (2020), Language Models are Few-Shot Learners — NeurIPS 2020",
+      "url": "https://proceedings.neurips.cc/paper_files/paper/2020/hash/1457c0d6bfcb4967418bfb8ac142f64a-Abstract.html"
+    },
+    {
+      "type": "link",
+      "text": "Kingma et Ba (2015), Adam: A Method for Stochastic Optimization — ICLR 2015",
+      "url": "https://openreview.net/forum?id=8gmWwjFyLj"
+    },
+    {
+      "type": "link",
+      "text": "Ouyang et al. (2022), Training language models to follow instructions with human feedback — NeurIPS 2022",
+      "url": "https://proceedings.neurips.cc/paper_files/paper/2022/hash/b1efde53be364a73914f58805a001731-Abstract-Conference.html"
+    },
+    {
+      "type": "link",
+      "text": "Liu et al. (2024), Lost in the Middle: How Language Models Use Long Contexts — TACL 2024",
+      "url": "https://aclanthology.org/2024.tacl-1.9/"
+    },
+    {
+      "type": "link",
+      "text": "Lewis et al. (2020), Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks — NeurIPS 2020",
+      "url": "https://papers.nips.cc/paper/2020/hash/6b493230205f780e1bc26945df7481e5-Abstract.html"
+    },
+    {
+      "type": "link",
+      "text": "Vaswani et al. (2017), Attention Is All You Need — NeurIPS 2017",
+      "url": "https://proceedings.neurips.cc/paper_files/paper/2017/hash/3f5ee243547dee91fbd053c1c4a845aa-Abstract.html"
+    },
+    {
+      "type": "link",
+      "text": "Holtzman et al. (2020), The Curious Case of Neural Text Degeneration — ICLR 2020",
+      "url": "https://openreview.net/forum?id=rygGQyrFvH"
+    },
+    {
+      "type": "link",
+      "text": "Lin et al. (2022), TruthfulQA: Measuring How Models Mimic Human Falsehoods — ACL 2022",
+      "url": "https://aclanthology.org/2022.acl-long.229/"
+    },
+    {
+      "type": "link",
+      "text": "Schick et al. (2023), Toolformer: Language Models Can Teach Themselves to Use Tools — NeurIPS 2023",
+      "url": "https://proceedings.neurips.cc/paper_files/paper/2023/hash/d842425e4bf79ba039352da0f658a906-Abstract-Conference.html"
+    },
+    {
+      "type": "link",
+      "text": "Ruan et al. (2024), Identifying the Risks of LM Agents with an LM-Emulated Sandbox — ICLR 2024",
+      "url": "https://proceedings.iclr.cc/paper_files/paper/2024/file/7274ed909a312d4d869cc328ad1c5f04-Paper-Conference.pdf"
+    },
+    {
+      "type": "link",
+      "text": "Yao et al. (2023), ReAct: Synergizing Reasoning and Acting in Language Models — ICLR 2023",
+      "url": "https://openreview.net/forum?id=WE_vluYUL-X"
     }
   ]
 }

@@ -1,9 +1,11 @@
 async function renderDiagram(container, { nodes, edges }) {
   const { default: cytoscape } = await import("https://cdn.jsdelivr.net/npm/cytoscape@3.33.1/dist/cytoscape.esm.min.mjs");
-  return cytoscape({
+  const graph = cytoscape({
     container,
     elements: [
-      ...nodes.map(({ id, label }) => ({ data: { id: "node:" + id, label } })),
+      ...nodes.map(({ id, label, reference, url }) => ({
+        data: { id: "node:" + id, label, reference, url }
+      })),
       ...edges.map(({ from, to, label }) => ({
         data: { source: "node:" + from, target: "node:" + to, label: label || "" }
       }))
@@ -13,6 +15,7 @@ async function renderDiagram(container, { nodes, edges }) {
       { selector: "node", style: {
         label: "data(label)", shape: "round-rectangle", width: 126, height: 50,
         "background-color": "#145578", color: "white", "font-size": 13,
+        "border-width": 2, "border-color": "#7ec8e3",
         "text-valign": "center", "text-wrap": "wrap", "text-max-width": 116
       } },
       { selector: "edge", style: {
@@ -21,6 +24,16 @@ async function renderDiagram(container, { nodes, edges }) {
       } }
     ]
   });
+  graph.on("tap", "node", (event) => {
+    const url = event.target.data("url");
+    if (typeof url === "string" && url.startsWith("https://")) {
+      window.open(url, "_blank", "noopener,noreferrer");
+    }
+  });
+  container.style.cursor = "pointer";
+  graph.on("mouseover", "node", () => { container.style.cursor = "pointer"; });
+  graph.on("mouseout", "node", () => { container.style.cursor = "default"; });
+  return graph;
 }
 
 function diagramPngOptions() {
@@ -66,3 +79,4 @@ document.addEventListener("alpine:init", () => {
     };
   });
 });
+

@@ -25,7 +25,7 @@ Créez un fichier `.json` dans `documents/` ou dans un sous-dossier. Utilisez la
 }
 ```
 
-Types de contenu : `heading` (niveaux 1 à 3), `paragraph`, `list` (optionnellement `"ordered": true`), `quote`, `code`, `link` (avec `text` et une URL HTTPS) et `separator`. Les champs `schemaVersion`, `title`, `description`, `category` et `content` sont requis. `filename` est facultatif.
+Types de contenu : `heading` (niveaux 1 à 3), `paragraph`, `list` (optionnellement `"ordered": true`), `quote`, `code`, `link` (avec `text` et une URL HTTPS), `separator` et `diagram`. Un diagramme a un `title`, des `nodes` (`id`, `label`, `reference`, `url`) et des `edges` (`from`, `to`, `label` facultatif). Chaque nœud ouvre sa référence HTTPS au clic et les liens sont aussi disponibles au clavier. Les champs `schemaVersion`, `title`, `description`, `category` et `content` sont requis. `filename` est facultatif.
 
 Chaque fiche permet de prévisualiser le document puis de télécharger le même contenu en Markdown, HTML, PDF ou Word (`.docx`). Le catalogue est actualisé à chaque push sur `main` ; les fichiers sont créés au clic dans le navigateur.
 
@@ -51,4 +51,5 @@ Ouvrez ensuite `http://localhost:8000`. La page doit être servie par HTTP pour 
 ## Publication
 
 Le workflow `.github/workflows/pages.yml` prépare le catalogue et le publie sur GitHub Pages. Dans **Settings → Pages**, choisissez **GitHub Actions** comme source.
+
 

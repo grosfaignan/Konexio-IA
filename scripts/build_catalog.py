@@ -27,9 +27,12 @@ def validate_diagram(block: dict, location: str) -> None:
         raise ValueError(f"{location} : nodes doit contenir au moins un nœud")
     ids = set()
     for node in nodes:
-        if (not isinstance(node, dict) or node.keys() != {"id", "label"}
-                or not all(has_text(value) for value in node.values())):
-            raise ValueError(f"{location} : chaque nœud doit avoir un id et un label")
+        if (not isinstance(node, dict) or node.keys() != {"id", "label", "reference", "url"}
+                or not all(has_text(node.get(key)) for key in ("id", "label", "reference", "url"))):
+            raise ValueError(f"{location} : chaque nœud doit avoir un id, un label, une référence et une URL")
+        parsed_url = urlparse(node["url"])
+        if parsed_url.scheme != "https" or not parsed_url.netloc:
+            raise ValueError(f"{location} : chaque URL de nœud doit être une adresse HTTPS valide")
         if node["id"] in ids:
             raise ValueError(f"{location} : identifiant de nœud en double « {node['id']} »")
         ids.add(node["id"])
@@ -145,4 +148,5 @@ def build() -> None:
 
 if __name__ == "__main__":
     build()
+
 

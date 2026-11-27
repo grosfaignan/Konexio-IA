@@ -3,11 +3,15 @@
     <figure class="my-4" x-data="diagram">
       <figcaption class="fw-semibold mb-2 d-flex align-items-center justify-content-between gap-2">
         <span><%= block.title %></span>
+        <small class="text-body-secondary">Cliquez sur un nœud pour ouvrir sa référence scientifique.</small>
         <button type="button" class="btn btn-outline-primary btn-sm" :disabled="!ready" @click="exportDiagram()" aria-label="Télécharger le diagramme « <%= block.title %> » en PNG">
           <svg aria-hidden="true" width="18" height="18"><use href="assets/formats.svg?v=2#png"></use></svg> PNG
         </button>
       </figcaption>
       <div x-ref="view" class="diagram-view border rounded" data-graph="<%= JSON.stringify(block) %>" role="img" aria-label="<%= block.title %>"></div>
+      <ul class="visually-hidden-focusable" aria-label="Références scientifiques des nœuds">
+        <% block.nodes.forEach((node) => { %><li><a href="<%= node.url %>" target="_blank" rel="noopener noreferrer"><%= node.label %> — <%= node.reference %></a></li><% }) %>
+      </ul>
     </figure>
   <% } %>
   <% if (block.type === "heading") { %><h<%= block.level %> class="mt-4 mb-3"><%= block.text %></h<%= block.level %>><% } %>
@@ -20,3 +24,4 @@
   <% } %>
   <% if (block.type === "separator") { %><hr class="my-4"><% } %>
 <% }) %>
+

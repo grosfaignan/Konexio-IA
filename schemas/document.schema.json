@@ -37,8 +37,8 @@
         "type": "diagram",
         "title": "Parcours de lecture",
         "nodes": [
-          { "id": "catalogue", "label": "Catalogue" },
-          { "id": "apercu", "label": "Aperçu" }
+            { "id": "catalogue", "label": "Catalogue", "reference": "Vaswani et al. (2017) — Attention Is All You Need, NeurIPS", "url": "https://proceedings.neurips.cc/paper_files/paper/2017/hash/3f5ee243547dee91fbd053c1c4a845aa-Abstract.html" },
+            { "id": "apercu", "label": "Aperçu", "reference": "Vaswani et al. (2017) — Attention Is All You Need, NeurIPS", "url": "https://proceedings.neurips.cc/paper_files/paper/2017/hash/3f5ee243547dee91fbd053c1c4a845aa-Abstract.html" }
         ],
         "edges": [{ "from": "catalogue", "to": "apercu", "label": "Ouvrir" }]
       }],
@@ -51,8 +51,13 @@
           "type": "array",
           "minItems": 1,
           "items": {
-            "type": "object", "required": ["id", "label"], "additionalProperties": false,
-            "properties": { "id": { "$ref": "#/$defs/text" }, "label": { "$ref": "#/$defs/text" } }
+            "type": "object", "required": ["id", "label", "reference", "url"], "additionalProperties": false,
+            "properties": {
+              "id": { "$ref": "#/$defs/text" },
+              "label": { "$ref": "#/$defs/text" },
+              "reference": { "$ref": "#/$defs/text" },
+              "url": { "type": "string", "format": "uri", "pattern": "^https://" }
+            }
           }
         },
         "edges": {
@@ -69,4 +74,5 @@
     }
   }
 }
+
 
