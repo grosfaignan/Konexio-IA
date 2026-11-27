@@ -348,6 +348,22 @@ document.addEventListener("alpine:init", () => {
       }
     },
 
+    fitPreview(frame) {
+      const fit = () => {
+        const content = frame?.contentDocument;
+        if (!content?.documentElement || !content.body) return;
+        const height = Math.max(
+          content.documentElement.scrollHeight,
+          content.body.scrollHeight,
+          content.documentElement.offsetHeight,
+          content.body.offsetHeight,
+        );
+        frame.style.height = `${height + 4}px`;
+      };
+      fit();
+      requestAnimationFrame(fit);
+    },
+
     closePreview() {
       this.selectedDocument = null;
       this.previewHtml = "";

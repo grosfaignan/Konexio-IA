@@ -105,7 +105,7 @@
     </div>
 
     <section id="preview-view" class="pb-5" x-show="selectedDocument" aria-label="Aperçu HTML du document" x-cloak>
-      <iframe id="document-preview" class="document-preview-frame bg-body" :srcdoc="previewHtml" :title="`Aperçu HTML : ${selectedDocument?.title || 'document'}`" sandbox=""></iframe>
+      <iframe id="document-preview" x-ref="previewFrame" class="document-preview-frame bg-body" :srcdoc="previewHtml" :title="`Aperçu HTML : ${selectedDocument?.title || 'document'}`" sandbox="allow-same-origin" @load="fitPreview($event.target)" @resize.window.debounce.100ms="fitPreview($refs.previewFrame)"></iframe>
     </section>
   </main>
 
