@@ -144,6 +144,7 @@ async function showPreview(item, trigger) {
     catalogueView.hidden = true;
     previewView.hidden = false;
     documentBanner.hidden = false;
+    backToCatalogue.focus({ preventScroll: true });
     setStatus(`Aperçu HTML affiché : ${item.title}`);
     window.scrollTo({ top: 0, behavior: "smooth" });
   } catch (error) {
