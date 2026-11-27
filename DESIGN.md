@@ -14,8 +14,10 @@ Une petite médiathèque pour les supports de formation à l’IA. La page aide 
 ## Interaction contract
 
 - Une fiche représente un document source JSON et garde un nom stable pour les quatre formats générés.
+- Le titre ouvre un aperçu HTML intégré ; les boutons de téléchargement restent groupés dans le bandeau fixe au-dessus de l’aperçu.
 - Markdown, HTML, PDF et DOCX sont créés uniquement après activation explicite du bouton correspondant.
 - La recherche filtre localement ; le bouton d’effacement reste disponible quand un terme est saisi.
 - Les erreurs de chargement ou de génération sont annoncées dans une zone de statut accessible.
 - Aucun document n’est envoyé à un service externe.
+
 

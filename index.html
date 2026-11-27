@@ -16,48 +16,66 @@
   </header>
 
   <main>
-    <section class="intro" aria-labelledby="page-title">
-      <div class="intro-copy">
-        <p class="kicker"><span class="live-dot" aria-hidden="true"></span> Ressources à télécharger</p>
-        <h1 id="page-title">Les contenus,<br><em>dans le bon format.</em></h1>
-        <p class="lede">Choisissez une ressource. Votre navigateur prépare le fichier demandé, à la volée.</p>
+    <section id="document-banner" class="document-banner" hidden aria-label="Téléchargement du document">
+      <button id="back-to-catalogue" class="back-button" type="button">← Toutes les ressources</button>
+      <div class="banner-content">
+        <div class="banner-title-wrap">
+          <span id="preview-category" class="category"></span>
+          <h2 id="preview-title"></h2>
+        </div>
+        <div id="preview-downloads" class="format-actions" aria-label="Télécharger le document"></div>
       </div>
-      <aside class="format-stamp" aria-label="Formats disponibles">
-        <span class="stamp-caption">Un contenu</span>
-        <span class="stamp-arrow" aria-hidden="true">↘</span>
-        <div class="stamp-formats"><span>PDF</span><span>DOCX</span><span>HTML</span><span>MD</span></div>
-      </aside>
     </section>
 
-    <section class="library" aria-labelledby="library-title">
-      <div class="library-head">
-        <div>
-          <p class="section-label">Catalogue</p>
-          <h2 id="library-title">Toutes les ressources</h2>
+    <p id="status" class="status" role="status" aria-live="polite">Chargement du catalogue…</p>
+
+    <div id="catalogue-view">
+      <section class="intro" aria-labelledby="page-title">
+        <div class="intro-copy">
+          <p class="kicker"><span class="live-dot" aria-hidden="true"></span> Ressources à télécharger</p>
+          <h1 id="page-title">Les contenus,<br><em>dans le bon format.</em></h1>
+          <p class="lede">Choisissez une ressource. Votre navigateur prépare le fichier demandé, à la volée.</p>
         </div>
-        <span class="result-count" id="result-count">Chargement…</span>
-      </div>
+        <aside class="format-stamp" aria-label="Formats disponibles">
+          <span class="stamp-caption">Un contenu</span>
+          <span class="stamp-arrow" aria-hidden="true">↘</span>
+          <div class="stamp-formats"><span>PDF</span><span>DOCX</span><span>HTML</span><span>MD</span></div>
+        </aside>
+      </section>
 
-      <div class="toolbar">
-        <label class="search-box">
-          <span class="search-icon" aria-hidden="true">⌕</span>
-          <span class="sr-only">Rechercher une ressource</span>
-          <input id="search" type="search" placeholder="Rechercher par titre ou thème" autocomplete="off">
-          <button id="clear-search" class="clear-search" type="button" aria-label="Effacer la recherche" hidden>×</button>
-        </label>
-        <label class="filter-label" for="category-filter">Thème</label>
-        <select id="category-filter" aria-label="Filtrer par thème">
-          <option value="all">Tous les thèmes</option>
-        </select>
-      </div>
+      <section class="library" aria-labelledby="library-title">
+        <div class="library-head">
+          <div>
+            <p class="section-label">Catalogue</p>
+            <h2 id="library-title">Toutes les ressources</h2>
+          </div>
+          <span class="result-count" id="result-count">Chargement…</span>
+        </div>
 
-      <p id="status" class="status" role="status" aria-live="polite">Chargement du catalogue…</p>
-      <div id="documents" class="document-list" aria-label="Liste des ressources"></div>
-      <div id="empty-state" class="empty-state" hidden>
-        <span class="empty-mark" aria-hidden="true">＋</span>
-        <h3 id="empty-title">Aucune ressource pour le moment</h3>
-        <p id="empty-copy">Ajoutez un fichier JSON dans le dossier <code>documents/</code> du dépôt, puis publiez la mise à jour.</p>
-      </div>
+        <div class="toolbar">
+          <label class="search-box">
+            <span class="search-icon" aria-hidden="true">⌕</span>
+            <span class="sr-only">Rechercher une ressource</span>
+            <input id="search" type="search" placeholder="Rechercher par titre ou thème" autocomplete="off">
+            <button id="clear-search" class="clear-search" type="button" aria-label="Effacer la recherche" hidden>×</button>
+          </label>
+          <label class="filter-label" for="category-filter">Thème</label>
+          <select id="category-filter" aria-label="Filtrer par thème">
+            <option value="all">Tous les thèmes</option>
+          </select>
+        </div>
+
+        <div id="documents" class="document-list" aria-label="Liste des ressources"></div>
+        <div id="empty-state" class="empty-state" hidden>
+          <span class="empty-mark" aria-hidden="true">＋</span>
+          <h3 id="empty-title">Aucune ressource pour le moment</h3>
+          <p id="empty-copy">Ajoutez un fichier JSON dans le dossier <code>documents/</code> du dépôt, puis publiez la mise à jour.</p>
+        </div>
+      </section>
+    </div>
+
+    <section id="preview-view" class="preview-view" hidden aria-label="Aperçu HTML du document">
+      <iframe id="document-preview" title="Aperçu HTML du document" sandbox=""></iframe>
     </section>
   </main>
 
@@ -67,4 +85,5 @@
   </footer>
 </body>
 </html>
+
 

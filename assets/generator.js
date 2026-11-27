@@ -14,8 +14,18 @@ const emptyCopy = document.querySelector("#empty-copy");
 const search = document.querySelector("#search");
 const clearSearch = document.querySelector("#clear-search");
 const categoryFilter = document.querySelector("#category-filter");
+const catalogueView = document.querySelector("#catalogue-view");
+const documentBanner = document.querySelector("#document-banner");
+const previewView = document.querySelector("#preview-view");
+const documentPreview = document.querySelector("#document-preview");
+const previewTitle = document.querySelector("#preview-title");
+const previewCategory = document.querySelector("#preview-category");
+const previewDownloads = document.querySelector("#preview-downloads");
+const backToCatalogue = document.querySelector("#back-to-catalogue");
 
 let catalog = [];
+const documentCache = new Map();
+let lastPreviewTrigger = null;
 
 const safeText = (value) => String(value ?? "");
 
@@ -42,15 +52,25 @@ function makeCard(item) {
 
   const title = document.createElement("h3");
   title.className = "document-title";
-  title.textContent = item.title;
+  const titleButton = document.createElement("button");
+  titleButton.type = "button";
+  titleButton.className = "document-title-button";
+  titleButton.dataset.previewDocumentId = item.id;
+  titleButton.textContent = item.title;
+  titleButton.setAttribute("aria-label", `Afficher l’aperçu HTML de « ${item.title} »`);
+  title.append(titleButton);
   const description = document.createElement("p");
   description.className = "document-description";
   description.textContent = item.description;
   copy.append(meta, title, description);
 
-  const actions = document.createElement("div");
-  actions.className = "format-actions";
-  actions.setAttribute("aria-label", `Télécharger ${item.title}`);
+  card.append(copy);
+  return card;
+}
+
+function populateFormatButtons(container, item) {
+  container.replaceChildren();
+  container.setAttribute("aria-label", `Télécharger ${item.title}`);
   for (const [format, label, longLabel] of FORMATS) {
     const button = document.createElement("button");
     button.className = "format-button";
@@ -60,11 +80,8 @@ function makeCard(item) {
     button.textContent = label;
     button.title = `Télécharger en ${longLabel}`;
     button.setAttribute("aria-label", `Télécharger « ${item.title} » en ${longLabel}`);
-    actions.append(button);
+    container.append(button);
   }
-
-  card.append(copy, actions);
-  return card;
 }
 
 function updateView() {
@@ -102,6 +119,45 @@ function usableContent(documentData) {
     return !(block.type === "heading" && block.level === 1
       && safeText(block.text).trim() === safeText(documentData.title).trim());
   });
+}
+
+async function loadDocument(item) {
+  if (documentCache.has(item.id)) return documentCache.get(item.id);
+  const response = await fetch(new URL(item.source, document.baseURI));
+  if (!response.ok) throw new Error(`La source JSON n’a pas pu être chargée (${response.status}).`);
+  const documentData = await response.json();
+  usableContent(documentData);
+  documentCache.set(item.id, documentData);
+  return documentData;
+}
+
+async function showPreview(item, trigger) {
+  lastPreviewTrigger = trigger;
+  setStatus(`Ouverture de l’aperçu : ${item.title}…`);
+  try {
+    const documentData = await loadDocument(item);
+    documentPreview.srcdoc = htmlFor(documentData);
+    documentPreview.title = `Aperçu HTML : ${item.title}`;
+    previewTitle.textContent = item.title;
+    previewCategory.textContent = item.category;
+    populateFormatButtons(previewDownloads, item);
+    catalogueView.hidden = true;
+    previewView.hidden = false;
+    documentBanner.hidden = false;
+    setStatus(`Aperçu HTML affiché : ${item.title}`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } catch (error) {
+    setStatus(error instanceof Error ? error.message : "L’aperçu HTML n’a pas pu être chargé.", true);
+  }
+}
+
+function returnToCatalogue() {
+  documentBanner.hidden = true;
+  previewView.hidden = true;
+  catalogueView.hidden = false;
+  documentPreview.srcdoc = "";
+  setStatus("Catalogue des ressources.");
+  if (lastPreviewTrigger?.isConnected) lastPreviewTrigger.focus();
 }
 
 function markdownFor(documentData) {
@@ -350,17 +406,15 @@ function downloadBlob(blob, filename) {
 async function createDownload(button) {
   const item = catalog.find((entry) => entry.id === button.dataset.documentId);
   if (!item) return;
-  const card = button.closest(".document-card");
-  const buttons = [...card.querySelectorAll("button")];
+  const actions = button.closest(".format-actions");
+  const buttons = [...actions.querySelectorAll("button")];
   buttons.forEach((element) => { element.disabled = true; });
   button.dataset.previousText = button.textContent;
   button.textContent = "…";
   const labels = { md: "Markdown", html: "HTML", pdf: "PDF", docx: "Word" };
   setStatus(`Création du fichier ${labels[button.dataset.format]} : ${item.title}…`);
   try {
-    const response = await fetch(new URL(item.source, document.baseURI));
-    if (!response.ok) throw new Error(`La source JSON n’a pas pu être chargée (${response.status}).`);
-    const documentData = await response.json();
+    const documentData = await loadDocument(item);
     const blob = blobFor(documentData, button.dataset.format);
     const extensions = { md: "md", html: "html", pdf: "pdf", docx: "docx" };
     const filename = safeText(item.filename || item.id.split("/").pop()).replace(/[^\p{L}\p{N}._-]+/gu, "-");
@@ -424,9 +478,17 @@ clearSearch.addEventListener("click", () => {
 });
 categoryFilter.addEventListener("change", updateView);
 list.addEventListener("click", (event) => {
+  const titleButton = event.target.closest("button[data-preview-document-id]");
+  if (titleButton) {
+    const item = catalog.find((entry) => entry.id === titleButton.dataset.previewDocumentId);
+    if (item) showPreview(item, titleButton);
+    return;
+  }
   const button = event.target.closest("button[data-document-id]");
   if (button && !button.disabled) createDownload(button);
 });
+backToCatalogue.addEventListener("click", returnToCatalogue);
 
 initialize();
+
 
