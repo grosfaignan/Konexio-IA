@@ -63,6 +63,11 @@
   object-fit: contain;
   justify-self: center;
   border-radius: .4rem;
+  --edge-fade: clamp(5px, 0.7vw, 10px);
+  mask-image:
+    linear-gradient(to right, transparent, black var(--edge-fade), black calc(100% - var(--edge-fade)), transparent),
+    linear-gradient(to bottom, transparent, black var(--edge-fade), black calc(100% - var(--edge-fade)), transparent);
+  mask-composite: intersect;
 }
 #library-title { scroll-margin-top: 5rem; }
 @media (max-width: 575.98px) {
