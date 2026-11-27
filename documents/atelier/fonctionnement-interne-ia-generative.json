@@ -24,8 +24,215 @@
       "text": "Le diagramme sépare la préparation du modèle, qui se fait avant son utilisation, du traitement d’une demande au moment de l’inférence. Une application peut ajouter des instructions, des documents de référence ou des outils autour du modèle, puis contrôler et présenter sa sortie."
     },
     {
-      "type": "code",
-      "text": "┌────────────────────────────── AVANT L’UTILISATION ──────────────────────────────┐\n│ DONNÉES                       APPRENTISSAGE DU MODÈLE                           │\n│ textes et autres médias       exemples convertis en tokens                     │\n│       │                                      │                                  │\n│       ▼                                      ▼                                  │\n│ collecte, filtrage,            prédire le token suivant → mesurer l’erreur      │\n│ déduplication, préparation              → rétropropager le gradient             │\n│       │                                      → ajuster les paramètres            │\n│       └──────────────────────────────────────┬───────────────────────────────────│\n│                                              ▼                                  │\n│                                    paramètres appris                            │\n│                                              │                                  │\n│                     réglage de suivi d’instructions et évaluations              │\n└─────────────────────────────────────────────┼──────────────────────────────────┘\n                                              │ modèle déployé\n                                              ▼\n┌────────────────────────────── À CHAQUE DEMANDE ─────────────────────────────────┐\n│ 1. Interface : message, historique utile, consignes et éventuels documents       │\n│       ▼                                                                          │\n│ 2. Préparation : assembler le contexte, limiter sa taille, tokenizer en IDs      │\n│       ▼                                                                          │\n│ 3. Représentation : vecteurs de tokens + information de position                 │\n│       ▼                                                                          │\n│ 4. Couches Transformer répétées :                                                │\n│       attention (quels tokens sont utiles ?) → réseau neuronal (MLP)             │\n│       + connexions résiduelles et normalisation                                 │\n│       ▼                                                                          │\n│ 5. Tête de sortie : scores (logits) pour les tokens possibles                   │\n│       ▼                                                                          │\n│ 6. Décodage : choisir un token selon la stratégie de génération                 │\n│       └──────── ajouter ce token au contexte et recommencer ────────────────┐    │\n│                                                                            │    │\n│       ◄──────────────────── jusqu’au critère d’arrêt ──────────────────────┘    │\n│       ▼                                                                          │\n│ 7. Convertir les tokens en texte → contrôles éventuels → réponse affichée        │\n└────────────────────────────────────────────────────────────────────────────────┘\n          │ si un outil ou une recherche est nécessaire                          │\n          └──► outil externe (recherche, calcul, base documentaire, API) ─────────┘\n               résultat de l’outil → ajout au contexte → nouvelle génération"
+      "type": "diagram",
+      "title": "Du préentraînement à la réponse générée",
+      "nodes": [
+        {
+          "id": "corpus",
+          "label": "Corpus\ntextes et médias"
+        },
+        {
+          "id": "preparation",
+          "label": "Filtrer, dédupliquer\net tokeniser"
+        },
+        {
+          "id": "pretraining",
+          "label": "Préentraînement\nprédire le token suivant"
+        },
+        {
+          "id": "optimization",
+          "label": "Erreur + gradient\najuster les poids"
+        },
+        {
+          "id": "alignment",
+          "label": "Suivi des consignes\net évaluations"
+        },
+        {
+          "id": "weights",
+          "label": "Paramètres appris\nmodèle déployé"
+        },
+        {
+          "id": "user_message",
+          "label": "Message utilisateur"
+        },
+        {
+          "id": "context",
+          "label": "Composer le contexte\ninstructions + historique"
+        },
+        {
+          "id": "knowledge",
+          "label": "Sources externes\nWeb ou documents"
+        },
+        {
+          "id": "retrieval",
+          "label": "Recherche / RAG\npassages pertinents"
+        },
+        {
+          "id": "tokenize",
+          "label": "Token IDs + vecteurs\net information de position"
+        },
+        {
+          "id": "transformer",
+          "label": "Couches Transformer\ncalcul causal répété"
+        },
+        {
+          "id": "attention",
+          "label": "Self-attention\nQ / K / V, masque causal"
+        },
+        {
+          "id": "mlp",
+          "label": "MLP, résidus\net normalisation"
+        },
+        {
+          "id": "logits",
+          "label": "Tête de sortie\nscores des tokens"
+        },
+        {
+          "id": "decoding",
+          "label": "Décodage\nprobabilités, température"
+        },
+        {
+          "id": "continue",
+          "label": "Continuer ?\ntoken choisi"
+        },
+        {
+          "id": "append_token",
+          "label": "Ajouter le token\nau contexte"
+        },
+        {
+          "id": "response",
+          "label": "Fin : filtres éventuels\net réponse affichée"
+        },
+        {
+          "id": "tool_call",
+          "label": "Appel d’outil\nstructuré"
+        },
+        {
+          "id": "tool_execution",
+          "label": "Vérifier les droits\npuis exécuter"
+        },
+        {
+          "id": "tool_result",
+          "label": "Résultat du calcul,\nde l’API ou de la recherche"
+        }
+      ],
+      "edges": [
+        {
+          "from": "corpus",
+          "to": "preparation",
+          "label": "préparer"
+        },
+        {
+          "from": "preparation",
+          "to": "pretraining",
+          "label": "séquences"
+        },
+        {
+          "from": "pretraining",
+          "to": "optimization",
+          "label": "prédiction"
+        },
+        {
+          "from": "optimization",
+          "to": "alignment",
+          "label": "poids ajustés"
+        },
+        {
+          "from": "alignment",
+          "to": "weights",
+          "label": "modèle prêt"
+        },
+        {
+          "from": "weights",
+          "to": "transformer",
+          "label": "poids servis"
+        },
+        {
+          "from": "user_message",
+          "to": "context",
+          "label": "message"
+        },
+        {
+          "from": "context",
+          "to": "tokenize",
+          "label": "contexte prêt"
+        },
+        {
+          "from": "knowledge",
+          "to": "retrieval",
+          "label": "chercher"
+        },
+        {
+          "from": "retrieval",
+          "to": "context",
+          "label": "ajouter les passages"
+        },
+        {
+          "from": "tokenize",
+          "to": "transformer",
+          "label": "entrée numérique"
+        },
+        {
+          "from": "transformer",
+          "to": "attention",
+          "label": "représentations"
+        },
+        {
+          "from": "attention",
+          "to": "mlp",
+          "label": "pondérer le contexte"
+        },
+        {
+          "from": "mlp",
+          "to": "logits",
+          "label": "états calculés"
+        },
+        {
+          "from": "logits",
+          "to": "decoding",
+          "label": "scores"
+        },
+        {
+          "from": "decoding",
+          "to": "continue",
+          "label": "choisir un token"
+        },
+        {
+          "from": "continue",
+          "to": "append_token",
+          "label": "continuer"
+        },
+        {
+          "from": "append_token",
+          "to": "transformer",
+          "label": "nouvelle étape"
+        },
+        {
+          "from": "continue",
+          "to": "response",
+          "label": "fin ou limite atteinte"
+        },
+        {
+          "from": "decoding",
+          "to": "tool_call",
+          "label": "appel structuré"
+        },
+        {
+          "from": "tool_call",
+          "to": "tool_execution",
+          "label": "autoriser et lancer"
+        },
+        {
+          "from": "tool_execution",
+          "to": "tool_result",
+          "label": "résultat"
+        },
+        {
+          "from": "tool_result",
+          "to": "context",
+          "label": "réinjecter puis générer"
+        }
+      ]
     },
     {
       "type": "heading",
