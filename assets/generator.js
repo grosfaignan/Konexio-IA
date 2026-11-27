@@ -358,7 +358,7 @@ document.addEventListener("alpine:init", () => {
           content.documentElement.offsetHeight,
           content.body.offsetHeight,
         );
-        frame.style.height = `${height + 4}px`;
+        frame.style.height = `${height + 24}px`; // Avoid a short inner scrollbar from rounding and browser margins.
       };
       fit();
       requestAnimationFrame(fit);
@@ -393,4 +393,5 @@ document.addEventListener("alpine:init", () => {
     },
   }));
 });
+
 
