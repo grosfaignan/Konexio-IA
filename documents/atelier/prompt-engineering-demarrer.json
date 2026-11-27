@@ -105,6 +105,10 @@
       "text": "Dites au modèle quoi faire s’il manque une information : poser une question, signaler l’incertitude, ou utiliser une mention comme « non précisé ». Pour les faits importants, demandez des références vérifiables et contrôlez-les. Un prompt bien écrit ne garantit pas que toutes les réponses seront exactes."
     },
     {
+      "type": "code",
+      "text": "En cas d’absence ou de manque de résultats :\n- Si tu ne trouves aucun résultat pertinent dans les sources disponibles, dis-le clairement. N’invente ni résultat, ni source. Propose des pistes pour élargir ou resserrer la recherche et précise quels critères changeraient.\n- Si les résultats sont partiels, distingue ce qui est confirmé de ce qui manque. Signale les limites de la recherche lorsque tu les connais et pose une question ciblée si une information est nécessaire pour continuer.\n- N’ajoute aucun fait qui n’est pas étayé par les informations disponibles. Si tu avances une interprétation, présente-la comme une inférence ; si tu ne peux pas vérifier un point, indique-le."
+    },
+    {
       "type": "heading",
       "level": 2,
       "text": "9. Améliorer le prompt par itérations"
@@ -121,6 +125,23 @@
     {
       "type": "paragraph",
       "text": "Un rôle comme « tu es un formateur qui s’adresse à des débutants » peut aider à cadrer le ton et le point de vue, mais il ne remplace ni le contexte ni les critères de réussite. Les balises, les exemples multiples et les chaînes de prompts peuvent aider pour des tâches longues ou répétitives. Leur utilité dépend du modèle et du cas d’usage : gardez-les seulement si elles améliorent les résultats observés."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "11. Citer les sources et les données clairement"
+    },
+    {
+      "type": "paragraph",
+      "text": "Pour un texte documenté, demandez une citation dans le texte au plus près de chaque affirmation importante, puis une bibliographie cohérente. Choisissez un style (auteur-date ou numéroté) et faites correspondre chaque citation à une référence complète. Une citation doit renvoyer à une source réellement consultée et soutenir précisément l’affirmation ; pour une citation directe, indiquez aussi la page ou la section. Ne demandez jamais au modèle de compléter une référence qu’il ne peut pas vérifier : il doit signaler ce qui manque."
+    },
+    {
+      "type": "paragraph",
+      "text": "Pour une source de données, indiquez au minimum l’organisme producteur, le nom du jeu de données, sa version ou sa date de publication, sa période et son champ de couverture, ainsi qu’un lien ou un identifiant stable. Précisez aussi les unités et les transformations importantes (agrégations, conversions, exclusions ou valeurs manquantes) afin que le lecteur puisse comprendre et reproduire l’analyse."
+    },
+    {
+      "type": "code",
+      "text": "Consigne de citation à ajouter au prompt :\nCite chaque affirmation factuelle importante dans le texte selon le style retenu (auteur-date ou numéroté). Associe chaque citation à une référence complète dans la bibliographie et vérifie que la source soutient bien l’affirmation. Pour une citation directe, donne la page ou la section. Pour les données, précise le producteur, le jeu de données, la version ou date, la période couverte, les unités, les transformations et le lien ou identifiant. N’invente aucune référence : signale toute source ou information impossible à vérifier. Distingue les faits sourcés, tes inférences et les éléments incertains."
     },
     {
       "type": "heading",
