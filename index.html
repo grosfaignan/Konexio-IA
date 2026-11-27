@@ -6,8 +6,8 @@
   <meta name="description" content="Trouvez une ressource pédagogique et téléchargez-la dans le format qui vous convient.">
   <title>Ressources téléchargeables</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.8/dist/yeti/bootstrap.min.css">
-  <link rel="stylesheet" href="assets/site.css?v=5">
-  <script src="assets/generator.js?v=3" defer></script>
+  <link rel="stylesheet" href="assets/site.css?v=6">
+  <script src="assets/generator.js?v=4" defer></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.17.5/dist/cdn.min.js"></script>
 </head>
 <body x-data="library" class="min-vh-100 d-flex flex-column bg-body">
@@ -30,10 +30,11 @@
     </nav>
   </header>
 
-  <main class="container flex-grow-1 py-3">
-    <p id="status" class="alert py-2 px-3 small mb-3" role="status" aria-live="polite" :class="hasError ? 'alert-danger' : 'visually-hidden'" x-text="status">Chargement du catalogue…</p>
+  <p id="status" class="alert py-2 px-3 small mb-3" role="status" aria-live="polite" :class="hasError ? 'alert-danger' : 'visually-hidden'" x-text="status">Chargement du catalogue…</p>
+  <main class="container flex-grow-1 py-3" x-show="!selectedDocument" x-cloak>
 
-    <div id="catalogue-view" x-show="!selectedDocument" x-cloak>
+
+    <div id="catalogue-view">
       <section class="library-intro" aria-labelledby="page-title">
         <div><h1 id="page-title">Ressources pédagogiques</h1>
         <p>Ouvrez un document pour le lire ou le télécharger en PDF, Word, HTML ou Markdown.</p></div>
@@ -97,10 +98,9 @@
       </section>
     </div>
 
-    <section id="preview-view" class="pb-5" x-show="selectedDocument" aria-label="Aperçu HTML du document" x-cloak>
-      <iframe id="document-preview" x-ref="previewFrame" class="document-preview-frame bg-body" :srcdoc="previewHtml" :title="`Aperçu HTML : ${selectedDocument?.title || 'document'}`" sandbox="allow-same-origin" @load="fitPreview($event.target)" @resize.window.debounce.100ms="fitPreview($refs.previewFrame)"></iframe>
-    </section>
   </main>
+
+  <main id="document-preview" class="container flex-grow-1 py-4" x-show="selectedDocument" x-cloak aria-label="Aperçu du document" x-html="previewHtml"></main>
 
   <footer class="border-top mt-auto py-3">
     <div class="container d-flex flex-column flex-sm-row justify-content-between gap-1 small text-body-secondary">

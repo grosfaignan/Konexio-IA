@@ -1,0 +1,3 @@
+<%~ include("@header", it.header) %>
+<article class="document-content mt-4"><%~ include("@blocks", { blocks: it.content }) %></article>
+<%~ include("@footer", it.footer) %>

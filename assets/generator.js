@@ -1,5 +1,6 @@
 const documentCache = new Map();
 let eta;
+let bodyTemplate;
 let pageTemplate;
 let headerTemplate;
 let footerTemplate;
@@ -45,7 +46,7 @@ function markdownFor(documentData) {
   return `${chunks.join("\n").trim()}\n`;
 }
 
-function htmlFor(documentData) {
+function htmlFor(documentData, template = "@page") {
   if (!eta) throw new Error("Les modèles Eta ne sont pas chargés.");
   const data = {
     document: { ...documentData, content: usableContent(documentData) },
@@ -53,7 +54,7 @@ function htmlFor(documentData) {
     footer: footerData,
     content: usableContent(documentData),
   };
-  return eta.render("@page", data);
+  return eta.render(template, data);
 }
 
 async function loadTemplates() {
@@ -64,10 +65,11 @@ async function loadTemplates() {
     if (!response.ok) throw new Error(`Le fichier ${path} n’a pas pu être chargé (${response.status}).`);
     return response.headers.get("content-type")?.includes("json") ? response.json() : response.text();
   };
-  [pageTemplate, headerTemplate, footerTemplate, blocksTemplate, headerData, footerData, downloadFormats] = await Promise.all([
-    read("templates/page.eta?v=3"), read("templates/header.eta"), read("templates/footer.eta"), read("templates/blocks.eta?v=3"),
+  [bodyTemplate, pageTemplate, headerTemplate, footerTemplate, blocksTemplate, headerData, footerData, downloadFormats] = await Promise.all([
+    read("templates/body.eta"), read("templates/page.eta?v=4"), read("templates/header.eta"), read("templates/footer.eta"), read("templates/blocks.eta?v=3"),
     read("data/header.json"), read("data/footer.json"), read("data/components/downloads.json"),
   ]);
+  eta.loadTemplate("@body", bodyTemplate);
   eta.loadTemplate("@page", pageTemplate);
   eta.loadTemplate("@header", headerTemplate);
   eta.loadTemplate("@footer", footerTemplate);
@@ -338,7 +340,7 @@ document.addEventListener("alpine:init", () => {
       this.setStatus(`Ouverture de l’aperçu : ${item.title}…`);
       try {
         const documentData = await loadDocument(item);
-        this.previewHtml = htmlFor(documentData);
+        this.previewHtml = htmlFor(documentData, "@body");
         this.selectedDocument = item;
         this.setStatus(`Aperçu HTML affiché : ${item.title}`);
         this.$nextTick(() => document.querySelector(".back-button")?.focus({ preventScroll: true }));
@@ -346,22 +348,6 @@ document.addEventListener("alpine:init", () => {
       } catch (error) {
         this.setStatus(error instanceof Error ? error.message : "L’aperçu HTML n’a pas pu être chargé.", true);
       }
-    },
-
-    fitPreview(frame) {
-      const fit = () => {
-        const content = frame?.contentDocument;
-        if (!content?.documentElement || !content.body) return;
-        const height = Math.max(
-          content.documentElement.scrollHeight,
-          content.body.scrollHeight,
-          content.documentElement.offsetHeight,
-          content.body.offsetHeight,
-        );
-        frame.style.height = `${height + 24}px`; // Avoid a short inner scrollbar from rounding and browser margins.
-      };
-      fit();
-      requestAnimationFrame(fit);
     },
 
     closePreview() {
