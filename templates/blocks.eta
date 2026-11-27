@@ -14,7 +14,12 @@
       </ul>
     </figure>
   <% } %>
-  <% if (block.type === "heading") { %><h<%= block.level %> class="mt-4 mb-3"><%= block.text %></h<%= block.level %>><% } %>
+  <% if (block.type === "heading") { %><h<%= block.level %> class="mt-4 mb-3"><% if (block.icon) { %><img src="<%= block.icon %>" alt="" style="width:1em;height:1em;object-fit:contain;vertical-align:-.1em"> <% } %><%= block.text %></h<%= block.level %>><% } %>
+  <% if (block.type === "image") { %>
+    <figure class="my-4"><img src="<%= block.src %>" alt="<%= block.alt %>" style="max-width:100%;height:auto">
+      <% if (block.caption) { %><figcaption class="small text-body-secondary mt-2"><%= block.caption %></figcaption><% } %>
+    </figure>
+  <% } %>
   <% if (block.type === "paragraph") { %><p class="document-paragraph mb-3"><%= block.text %></p><% } %>
   <% if (block.type === "link") { %><p class="document-paragraph mb-3"><a href="<%= block.url %>"><%= block.text %></a></p><% } %>
   <% if (block.type === "quote") { %><blockquote class="document-quote blockquote border-start border-4 border-primary ps-3 my-4"><p><%= block.text %></p></blockquote><% } %>

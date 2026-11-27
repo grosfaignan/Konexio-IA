@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import re
 import shutil
 from pathlib import Path
 from typing import Any
@@ -13,7 +14,12 @@ from urllib.parse import urlparse
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "documents"
 SITE = ROOT / "_site"
-BLOCK_TYPES = {"heading", "paragraph", "list", "quote", "code", "link", "separator", "diagram"}
+BLOCK_TYPES = {"heading", "paragraph", "list", "quote", "code", "link", "separator", "diagram", "image"}
+
+
+def validate_image_source(value: Any, location: str) -> None:
+    if not isinstance(value, str) or not re.fullmatch(r"(assets/[^\s<>]+|https://[^/\s<>]+(?:/[^\s<>]*)?)", value):
+        raise ValueError(f"{location} : indiquez un chemin assets/ ou une URL HTTPS")
 
 
 def validate_diagram(block: dict, location: str) -> None:
@@ -65,11 +71,20 @@ def read_document(path: Path) -> dict[str, Any]:
     if not isinstance(document["content"], list) or not document["content"]:
         raise ValueError(f"{path.relative_to(ROOT)} : content doit être une liste non vide")
 
+    if "icon" in document:
+        validate_image_source(document["icon"], f"{path.relative_to(ROOT)} : icon")
     for index, block in enumerate(document["content"], start=1):
         location = f"{path.relative_to(ROOT)} : bloc {index}"
         if not isinstance(block, dict) or block.get("type") not in BLOCK_TYPES:
             raise ValueError(f"{location} : type attendu parmi {', '.join(sorted(BLOCK_TYPES))}")
         kind = block["type"]
+        if kind == "heading" and "icon" in block:
+            validate_image_source(block["icon"], location)
+        if kind == "image":
+            validate_image_source(block.get("src"), location)
+            if (block.keys() - {"type", "src", "alt", "caption"}
+                    or not isinstance(block.get("alt"), str) or not isinstance(block.get("caption", ""), str)):
+                raise ValueError(f"{location} : image attendue avec src, alt et une légende caption facultative")
         if kind == "diagram":
             validate_diagram(block, location)
         if kind in {"heading", "paragraph", "quote", "code", "link"} and not isinstance(block.get("text"), str):

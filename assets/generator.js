@@ -32,10 +32,24 @@ async function loadDocument(item) {
   return documentData;
 }
 
+function titleIcon(doc) {
+  return doc.icon || doc.content.find(b => b.type === "heading" && b.level === 1 && b.text.trim() === doc.title.trim() && b.icon)?.icon;
+}
+
+function markdownImage(src, alt = "") {
+  const url = new URL(src, document.baseURI).href;
+  return `![${alt.replace(/[\\[\]\\]/g, "\\$&")}](<${url}>)`;
+}
+
 function markdownFor(documentData) {
-  const chunks = [`# ${documentData.title}`, "", documentData.description || ""];
+  const heading = (text, icon) => icon ? `${markdownImage(icon)} ${text}` : text;
+  const chunks = [`# ${heading(documentData.title, titleIcon(documentData))}`, "", documentData.description || ""];
   for (const block of usableContent(documentData)) {
-    if (block.type === "heading") chunks.push(`${"#".repeat(block.level)} ${block.text}`);
+    if (block.type === "heading") chunks.push(`${"#".repeat(block.level)} ${heading(block.text, block.icon)}`);
+    else if (block.type === "image") {
+      chunks.push(markdownImage(block.src, block.alt));
+      if (block.caption) chunks.push("", block.caption);
+    }
     else if (block.type === "paragraph") chunks.push(block.text);
     else if (block.type === "link") chunks.push(`[${block.text}](${block.url})`);
     else if (block.type === "quote") chunks.push(...safeText(block.text).split("\n").map((line) => `> ${line}`));
@@ -50,10 +64,15 @@ function markdownFor(documentData) {
 
 function htmlFor(documentData, template = "@page") {
   if (!eta) throw new Error("Les modèles Eta ne sont pas chargés.");
-  const content = usableContent(documentData, template === "@body");
+  const content = usableContent(documentData, template === "@body").map(block => {
+    if (block.type === "image") return { ...block, src: new URL(block.src, document.baseURI).href };
+    if (block.type === "heading" && block.icon) return { ...block, icon: new URL(block.icon, document.baseURI).href };
+    return block;
+  });
+  const icon = titleIcon(documentData);
   const data = {
     document: { ...documentData, content },
-    header: { ...headerData, title: documentData.title, category: documentData.category, description: documentData.description },
+    header: { ...headerData, title: documentData.title, icon: icon && new URL(icon, document.baseURI).href, category: documentData.category, description: documentData.description },
     footer: footerData,
     content,
   };
@@ -69,7 +88,7 @@ async function loadTemplates() {
     return response.headers.get("content-type")?.includes("json") ? response.json() : response.text();
   };
   [bodyTemplate, pageTemplate, headerTemplate, footerTemplate, blocksTemplate, headerData, footerData, downloadFormats] = await Promise.all([
-    read("templates/body.eta"), read("templates/page.eta?v=4"), read("templates/header.eta"), read("templates/footer.eta"), read("templates/blocks.eta?v=6"),
+    read("templates/body.eta"), read("templates/page.eta?v=4"), read("templates/header.eta?v=2"), read("templates/footer.eta"), read("templates/blocks.eta?v=7"),
     read("data/header.json"), read("data/footer.json"), read("data/components/downloads.json?v=2"),
   ]);
   eta.loadTemplate("@body", bodyTemplate);
@@ -104,6 +123,7 @@ function docxFor(documentData) {
   if (documentData.description) paragraphs.push({ text: documentData.description, style: "Subtitle" });
   for (const block of usableContent(documentData)) {
     if (block.type === "heading") paragraphs.push({ text: block.text, style: `Heading${block.level}` });
+    else if (block.type === "image" && (block.caption || block.alt)) paragraphs.push({ text: block.caption || block.alt });
     else if (block.type === "paragraph") paragraphs.push({ text: block.text });
     else if (block.type === "link") paragraphs.push({ text: `${block.text}: ${block.url}` });
     else if (block.type === "quote") paragraphs.push({ text: block.text, style: "Quote" });
@@ -232,6 +252,7 @@ function pdfFor(documentData) {
   if (documentData.description) writeLine(documentData.description, "description");
   for (const block of usableContent(documentData)) {
     if (block.type === "heading") writeLine(block.text, `heading${block.level}`);
+    else if (block.type === "image" && (block.caption || block.alt)) writeLine(block.caption || block.alt, "normal");
     else if (block.type === "paragraph") writeLine(block.text, "normal");
     else if (block.type === "link") writeLine(`${block.text}: ${block.url}`, "normal");
     else if (block.type === "quote") writeLine(`“${block.text}”`, "quote");
@@ -287,6 +308,7 @@ async function pngFor(documentData) {
   document.body.append(stage);
   try {
     await document.fonts.ready;
+    await Promise.all(Array.from(page.querySelectorAll("img"), image => image.decode()));
     for (const view of page.querySelectorAll("[data-graph]")) {
       const graph = await renderDiagram(view, JSON.parse(view.dataset.graph));
       try {

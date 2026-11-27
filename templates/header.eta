@@ -1,6 +1,6 @@
 <header class="border-bottom pb-4">
   <p class="text-uppercase small fw-semibold text-body-secondary mb-4"><%= it.eyebrow %></p>
   <p><span class="badge text-bg-primary"><%= it.category %></span></p>
-  <h1 class="display-5 text-break"><%= it.title %></h1>
+  <h1 class="display-5 text-break"><% if (it.icon) { %><img src="<%= it.icon %>" alt="" style="width:1em;height:1em;object-fit:contain;vertical-align:-.1em"> <% } %><%= it.title %></h1>
   <p class="lead text-body-secondary mb-0"><%= it.description %></p>
 </header>
