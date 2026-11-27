@@ -61,7 +61,7 @@
     },
     {
       "type": "paragraph",
-      "text": "Un ou plusieurs exemples de bonne entrée et de bonne sortie peuvent montrer le ton, le niveau de détail ou la structure souhaitée. Choisissez des exemples proches de la tâche réelle et assez variés pour éviter que le modèle ne reproduise un détail accidentel. Pour une demande simple, un exemple n’est pas toujours nécessaire."
+      "text": "Des exemples d’entrées et de sorties peuvent orienter la réponse en montrant le type de traitement, les catégories possibles et le format attendu. Des travaux expérimentaux sur l’apprentissage en contexte confirment que ces repères peuvent influencer les réponses. Ils ne garantissent toutefois ni la justesse ni la qualité : le choix et l’ordre des exemples peuvent modifier les résultats. Choisissez des exemples proches de la tâche, variés et représentatifs, puis vérifiez leur effet sur plusieurs cas. Pour une demande simple, un exemple n’est pas toujours nécessaire. (Min et al., 2022 ; Zhao et al., 2021.)"
     },
     {
       "type": "heading",
@@ -142,7 +142,9 @@
       "items": [
         "OpenAI, Bonnes pratiques pour l’ingénierie des prompts : https://help.openai.com/en/articles/6654000-best-practices-for-prompt-engineering-with-the-openai-api",
         "OpenAI, Guide pratique de prompt engineering pour les usages quotidiens : https://developers.openai.com/cookbook/examples/chatgpt/chatgpt_prompt_guide/chatgpt_prompt_guide",
-        "Anthropic, Prompt engineering : bonnes pratiques : https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"
+        "Anthropic, Prompt engineering : bonnes pratiques : https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+        "Min, S. et al. (2022). Rethinking the Role of Demonstrations: What Makes In-Context Learning Work? Proceedings of EMNLP 2022, p. 11048–11064 : https://aclanthology.org/2022.emnlp-main.759/",
+        "Zhao, Z. et al. (2021). Calibrate Before Use: Improving Few-shot Performance of Language Models. Proceedings of ICML 2021, PMLR 139, p. 12697–12706 : https://proceedings.mlr.press/v139/zhao21c.html"
       ]
     }
   ]
