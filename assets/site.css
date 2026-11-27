@@ -43,9 +43,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   padding: 0 max(28px, calc((100vw - 1120px) / 2));
   border-bottom: 1px solid rgba(20, 35, 31, .1);
 }
-.brand { display: inline-flex; align-items: center; gap: 11px; text-decoration: none; font-size: 15px; font-weight: 750; letter-spacing: -.035em; }
-.brand b { color: var(--coral); }
-.brand-symbol { width: 34px; height: 34px; display: grid; place-items: center; background: var(--ink); color: #fff; border-radius: 50% 50% 50% 12px; font-family: Georgia, serif; font-size: 19px; font-weight: 400; }
+.brand { display: inline-flex; align-items: center; text-decoration: none; font-size: 15px; font-weight: 750; letter-spacing: -.035em; }
 .masthead-note { color: var(--muted); font-size: 12px; letter-spacing: .04em; }
 
 main { width: min(100% - 56px, 1120px); margin: 0 auto; }
