@@ -6,7 +6,7 @@ Une petite médiathèque pour les supports de formation à l’IA. La page aide 
 
 ## Visual direction
 
-- Base visuelle : Bootstrap 5 avec le thème Minty de Bootswatch. Les classes Bootstrap et les variables `--bs-*` gardent l’interface compatible avec les thèmes Bootswatch.
+- Base visuelle : Bootstrap 5 avec le thème Darkly de Bootswatch. Les classes Bootstrap et les variables `--bs-*` gardent l’interface compatible avec les thèmes Bootswatch.
 - Mise en page : catalogue responsive construit avec la grille et les composants Bootstrap.
 - Signature : les boutons de téléchargement restent dans le bandeau de l’aperçu ; la fiche du catalogue ouvre l’aperçu HTML.
 - `assets/site.css` ne redéfinit pas la palette du thème ; il règle seulement le bandeau collant, la hauteur de l’aperçu et l’affichage avant Alpine.
