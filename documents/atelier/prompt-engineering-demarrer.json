@@ -61,11 +61,15 @@
     },
     {
       "type": "paragraph",
-      "text": "Des exemples d’entrées et de sorties peuvent orienter la réponse en montrant le type de traitement, les catégories possibles et le format attendu. Ils ne garantissent toutefois ni la justesse ni la qualité. Pour une demande simple, un exemple n’est pas toujours nécessaire."
+      "text": "Un ou plusieurs exemples de bonne entrée et de bonne sortie peuvent montrer le ton, le niveau de détail ou la structure souhaitée. Choisissez des exemples proches de la tâche réelle et assez variés pour éviter que le modèle ne reproduise un détail accidentel. Pour une demande simple, un exemple n’est pas toujours nécessaire."
     },
     {
       "type": "paragraph",
-      "text": "Note : choisissez les exemples avec soin, car ils peuvent orienter la réponse produite par le modèle ; leur choix et leur ordre peuvent aussi modifier les résultats."
+      "text": "Les exemples peuvent aussi servir de repères sur le type de traitement, les catégories de réponse et le format attendu. Des travaux expérimentaux montrent que leur choix et leur ordre peuvent influencer les résultats ; un exemple erroné, peu représentatif ou déséquilibré risque donc de biaiser la réponse. Testez le prompt sur plusieurs cas représentatifs."
+    },
+    {
+      "type": "paragraph",
+      "text": "Note : choisissez les exemples avec soin, car ils peuvent orienter la réponse produite par le modèle sans garantir qu’elle soit juste."
     },
     {
       "type": "link",
