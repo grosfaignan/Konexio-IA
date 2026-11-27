@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "title": "Fonctionnement interne d’une intelligence artificielle générative",
+  "description": "Un diagramme détaillé et une explication accessible du préentraînement, des Transformers, de la génération token après token et des outils autour d’un assistant IA.",
+  "category": "Intelligence artificielle",
+  "filename": "fonctionnement-interne-ia-generative",
+  "content": [
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "Comment fonctionne une intelligence artificielle générative"
+    },
+    {
+      "type": "paragraph",
+      "text": "Ce document décrit le fonctionnement général d’un assistant fondé sur un grand modèle de langage (LLM) de type Transformer. Il suit le parcours complet, depuis les données d’entraînement jusqu’à la réponse affichée. Les architectures varient : le schéma est un modèle pédagogique, pas la description confidentielle d’un produit particulier. Une IA générative calcule des suites probables à partir de son contexte ; elle ne consulte pas automatiquement le Web et ne garantit pas la vérité de chaque phrase."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Vue d’ensemble"
+    },
+    {
+      "type": "paragraph",
+      "text": "Le diagramme sépare la préparation du modèle, qui se fait avant son utilisation, du traitement d’une demande au moment de l’inférence. Une application peut ajouter des instructions, des documents de référence ou des outils autour du modèle, puis contrôler et présenter sa sortie."
+    },
+    {
+      "type": "code",
+      "text": "┌────────────────────────────── AVANT L’UTILISATION ──────────────────────────────┐\n│ DONNÉES                       APPRENTISSAGE DU MODÈLE                           │\n│ textes et autres médias       exemples convertis en tokens                     │\n│       │                                      │                                  │\n│       ▼                                      ▼                                  │\n│ collecte, filtrage,            prédire le token suivant → mesurer l’erreur      │\n│ déduplication, préparation              → rétropropager le gradient             │\n│       │                                      → ajuster les paramètres            │\n│       └──────────────────────────────────────┬───────────────────────────────────│\n│                                              ▼                                  │\n│                                    paramètres appris                            │\n│                                              │                                  │\n│                     réglage de suivi d’instructions et évaluations              │\n└─────────────────────────────────────────────┼──────────────────────────────────┘\n                                              │ modèle déployé\n                                              ▼\n┌────────────────────────────── À CHAQUE DEMANDE ─────────────────────────────────┐\n│ 1. Interface : message, historique utile, consignes et éventuels documents       │\n│       ▼                                                                          │\n│ 2. Préparation : assembler le contexte, limiter sa taille, tokenizer en IDs      │\n│       ▼                                                                          │\n│ 3. Représentation : vecteurs de tokens + information de position                 │\n│       ▼                                                                          │\n│ 4. Couches Transformer répétées :                                                │\n│       attention (quels tokens sont utiles ?) → réseau neuronal (MLP)             │\n│       + connexions résiduelles et normalisation                                 │\n│       ▼                                                                          │\n│ 5. Tête de sortie : scores (logits) pour les tokens possibles                   │\n│       ▼                                                                          │\n│ 6. Décodage : choisir un token selon la stratégie de génération                 │\n│       └──────── ajouter ce token au contexte et recommencer ────────────────┐    │\n│                                                                            │    │\n│       ◄──────────────────── jusqu’au critère d’arrêt ──────────────────────┘    │\n│       ▼                                                                          │\n│ 7. Convertir les tokens en texte → contrôles éventuels → réponse affichée        │\n└────────────────────────────────────────────────────────────────────────────────┘\n          │ si un outil ou une recherche est nécessaire                          │\n          └──► outil externe (recherche, calcul, base documentaire, API) ─────────┘\n               résultat de l’outil → ajout au contexte → nouvelle génération"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "1. Préparer les données et apprendre les paramètres"
+    },
+    {
+      "type": "paragraph",
+      "text": "Les équipes d’entraînement rassemblent des données, les filtrent et les transforment en exemples adaptés à l’objectif. Le détail des corpus, des licences et des filtres dépend du modèle et n’est pas toujours public. Les données sont découpées en tokens, c’est-à-dire en morceaux de texte (caractères, parties de mots ou mots fréquents). Un tokenizer associe chaque token à un identifiant numérique."
+    },
+    {
+      "type": "paragraph",
+      "text": "Pendant le préentraînement d’un modèle de langage autorégressif, le modèle reçoit une séquence et apprend à prédire le token suivant. Il compare ses scores à la bonne réponse, calcule une erreur, puis un algorithme de descente de gradient ajuste les paramètres du réseau pour réduire cette erreur sur de nombreux exemples. Les paramètres sont des nombres appris, répartis dans les matrices du modèle ; ils encodent des régularités statistiques sans constituer une base de données consultable mot à mot."
+    },
+    {
+      "type": "paragraph",
+      "text": "Après ce préentraînement, un modèle conversationnel peut recevoir des étapes supplémentaires : exemples de réponses attendues, réglage supervisé, préférences humaines ou évaluations automatisées. Ces étapes visent à mieux suivre les consignes et à réduire certains comportements indésirables. Les méthodes exactes varient selon les systèmes et ne garantissent ni l’exactitude ni l’absence de biais."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "2. Transformer un message en représentation numérique"
+    },
+    {
+      "type": "paragraph",
+      "text": "À l’inférence, l’application construit l’entrée : message actuel, une partie de l’historique, instructions et parfois des résultats de recherche ou des documents. Elle peut retirer les éléments trop anciens pour respecter la limite de contexte. Le tokenizer convertit ensuite le texte en identifiants de tokens. Ces identifiants sont transformés en vecteurs, auxquels le modèle associe aussi une information de position afin de tenir compte de l’ordre."
+    },
+    {
+      "type": "paragraph",
+      "text": "Le contexte est temporaire : il sert au calcul de cette réponse. Sauf fonctionnalité de mémoire explicitement prévue par l’application, une conversation ne modifie pas automatiquement les paramètres du modèle et ne lui apprend pas durablement un nouveau fait."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "3. Traiter les tokens dans les couches Transformer"
+    },
+    {
+      "type": "paragraph",
+      "text": "Un Transformer empile des couches de calcul. Dans l’attention, chaque position produit des représentations appelées requête, clé et valeur. Le mécanisme compare les requêtes aux clés pour pondérer les valeurs des autres positions. Dans un modèle génératif causal, un masque empêche généralement une position de regarder les tokens futurs. Plusieurs têtes d’attention calculent différents motifs en parallèle."
+    },
+    {
+      "type": "paragraph",
+      "text": "Les sorties de l’attention passent ensuite dans un réseau neuronal par position, souvent appelé réseau feed-forward ou MLP. Les connexions résiduelles et les opérations de normalisation facilitent la circulation et la stabilité des calculs. Ces étapes sont répétées de nombreuses fois ; les vecteurs deviennent des représentations contextuelles qui intègrent les relations apprises entre tokens. Le modèle ne raisonne pas nécessairement en phrases explicites : ce sont des opérations numériques sur des représentations."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "4. Produire une réponse token après token"
+    },
+    {
+      "type": "paragraph",
+      "text": "À la dernière position, une projection appelée tête de langage attribue un score, ou logit, à chaque token du vocabulaire. Une transformation peut convertir ces scores en distribution de probabilités. La stratégie de décodage choisit le token suivant : choix du score maximal ou échantillonnage, parfois modulé par des paramètres tels que la température. Ce réglage influence la variété des sorties, pas leur véracité."
+    },
+    {
+      "type": "paragraph",
+      "text": "Le token choisi est ajouté au contexte, puis le modèle recalcule les scores pour le token suivant. Ce cycle continue jusqu’à une limite de longueur ou un token de fin. Dans les systèmes déployés, des optimisations comme le cache des clés et valeurs évitent de recalculer une partie des représentations précédentes, mais ne changent pas l’idée générale."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "5. Situer l’application, les recherches et les outils"
+    },
+    {
+      "type": "paragraph",
+      "text": "Le modèle est une partie d’un système plus vaste. L’application peut ajouter un message système, vérifier les droits, limiter le débit, appliquer des filtres et transformer la sortie. Pour répondre avec des informations récentes ou propres à une organisation, elle peut rechercher des documents, sélectionner des passages pertinents (génération augmentée par récupération, ou RAG) et les ajouter au contexte. Le modèle formule alors une réponse à partir de ces éléments, mais l’application doit encore vérifier que les citations et les résultats correspondent."
+    },
+    {
+      "type": "paragraph",
+      "text": "Certains assistants peuvent demander à un outil de calcul, à un moteur de recherche ou à une API d’effectuer une action. L’application exécute l’appel autorisé, renvoie son résultat au modèle, puis celui-ci produit une réponse finale. Cette boucle d’outil est une capacité du système autour du modèle ; elle n’est pas automatiquement présente dans tous les modèles."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "6. Comprendre les limites"
+    },
+    {
+      "type": "list",
+      "items": [
+        "Une réponse fluide peut être fausse : le modèle optimise une prédiction de tokens, pas une preuve de vérité.",
+        "Les informations dépendent des données d’entraînement, du contexte fourni et des outils réellement appelés.",
+        "Le contexte a une taille finie ; des détails peuvent être omis ou perdre leur importance.",
+        "Les biais, les erreurs de données et les consignes ambiguës peuvent influencer la sortie.",
+        "Pour une décision importante, vérifier les faits auprès de sources fiables et faire intervenir une personne compétente."
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "À retenir"
+    },
+    {
+      "type": "paragraph",
+      "text": "Un assistant génératif combine un modèle appris à l’avance et une application qui prépare chaque demande. Le modèle transforme le contexte en représentations, calcule une distribution de tokens possibles et génère la réponse de manière itérative. La recherche documentaire, l’accès à des outils, les filtres et l’interface relèvent généralement de la couche applicative. Le diagramme décrit un cas fréquent de modèle de langage Transformer ; une IA d’image, d’audio ou multimodale peut employer d’autres encodeurs et étapes."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "text": "Sources pour approfondir"
+    },
+    {
+      "type": "link",
+      "text": "Vaswani et al., Attention Is All You Need, 2017 — architecture Transformer",
+      "url": "https://arxiv.org/abs/1706.03762"
+    },
+    {
+      "type": "link",
+      "text": "Brown et al., Language Models are Few-Shot Learners, 2020 — apprentissage autorégressif à grande échelle",
+      "url": "https://arxiv.org/abs/2005.14165"
+    },
+    {
+      "type": "link",
+      "text": "OpenAI Tokenizer — aperçu du découpage du texte en tokens",
+      "url": "https://platform.openai.com/tokenizer"
+    }
+  ]
+}
+
