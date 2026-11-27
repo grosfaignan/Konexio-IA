@@ -69,8 +69,8 @@ async function loadTemplates() {
     return response.headers.get("content-type")?.includes("json") ? response.json() : response.text();
   };
   [bodyTemplate, pageTemplate, headerTemplate, footerTemplate, blocksTemplate, headerData, footerData, downloadFormats] = await Promise.all([
-    read("templates/body.eta"), read("templates/page.eta?v=4"), read("templates/header.eta"), read("templates/footer.eta"), read("templates/blocks.eta?v=5"),
-    read("data/header.json"), read("data/footer.json"), read("data/components/downloads.json"),
+    read("templates/body.eta"), read("templates/page.eta?v=4"), read("templates/header.eta"), read("templates/footer.eta"), read("templates/blocks.eta?v=6"),
+    read("data/header.json"), read("data/footer.json"), read("data/components/downloads.json?v=2"),
   ]);
   eta.loadTemplate("@body", bodyTemplate);
   eta.loadTemplate("@page", pageTemplate);
@@ -272,7 +272,45 @@ function pdfFor(documentData) {
   return new Blob([new TextEncoder().encode(pdf)], { type: "application/pdf" });
 }
 
+async function pngFor(documentData) {
+  const { toBlob } = await import("https://cdn.jsdelivr.net/npm/html-to-image@1.11.13/+esm");
+  const stage = document.createElement("div");
+  stage.setAttribute("x-ignore", "");
+  stage.setAttribute("aria-hidden", "true");
+  stage.inert = true;
+  stage.style.cssText = "position:absolute;top:0;left:-10000px;width:840px";
+  const page = document.createElement("article");
+  page.className = "support-png p-4 bg-white text-dark";
+  page.innerHTML = htmlFor(documentData, "@body");
+  page.querySelectorAll("button").forEach(button => button.remove());
+  stage.append(page);
+  document.body.append(stage);
+  try {
+    await document.fonts.ready;
+    for (const view of page.querySelectorAll("[data-graph]")) {
+      const graph = await renderDiagram(view, JSON.parse(view.dataset.graph));
+      try {
+        const image = new Image();
+        image.alt = view.getAttribute("aria-label");
+        image.style.cssText = "display:block;max-width:100%;max-height:32rem;margin:auto";
+        image.src = graph.png(diagramPngOptions());
+        await image.decode();
+        view.replaceWith(image);
+      } finally {
+        graph.destroy();
+      }
+    }
+    const pixelRatio = Math.min(2, 16000 / page.scrollHeight);
+    const blob = await toBlob(page, { pixelRatio, backgroundColor: "#ffffff", skipFonts: true });
+    if (!blob?.size) throw new Error("Impossible de créer l’image du support.");
+    return blob;
+  } finally {
+    stage.remove();
+  }
+}
+
 function blobFor(documentData, format) {
+  if (format === "png") return pngFor(documentData);
   if (format === "md") return new Blob([markdownFor(documentData)], { type: "text/markdown;charset=utf-8" });
   if (format === "html") return new Blob([htmlFor(documentData)], { type: "text/html;charset=utf-8" });
   if (format === "pdf") return pdfFor(documentData);
@@ -368,15 +406,14 @@ document.addEventListener("alpine:init", () => {
     async download(item, format) {
       if (!item || this.busyFormat) return;
       this.busyFormat = format;
-      const labels = { md: "Markdown", html: "HTML", pdf: "PDF", docx: "Word" };
-      const extensions = { md: "md", html: "html", pdf: "pdf", docx: "docx" };
-      this.setStatus(`Création du fichier ${labels[format]} : ${item.title}…`);
+      const label = this.formats.find(entry => entry.id === format).name;
+      this.setStatus(`Création du fichier ${label} : ${item.title}…`);
       try {
         const documentData = await loadDocument(item);
-        const blob = blobFor(documentData, format);
+        const blob = await blobFor(documentData, format);
         const filename = safeText(item.filename || item.id.split("/").pop()).replace(/[^\p{L}\p{N}._-]+/gu, "-");
-        downloadBlob(blob, `${filename}.${extensions[format]}`);
-        this.setStatus(`Fichier ${labels[format]} prêt : ${filename}.${extensions[format]}`);
+        downloadBlob(blob, `${filename}.${format}`);
+        this.setStatus(`Fichier ${label} prêt : ${filename}.${format}`);
       } catch (error) {
         this.setStatus(error instanceof Error ? error.message : "La création du fichier a échoué.", true);
       } finally {

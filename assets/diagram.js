@@ -1,39 +1,62 @@
+async function renderDiagram(container, { nodes, edges }) {
+  const { default: cytoscape } = await import("https://cdn.jsdelivr.net/npm/cytoscape@3.33.1/dist/cytoscape.esm.min.mjs");
+  return cytoscape({
+    container,
+    elements: [
+      ...nodes.map(({ id, label }) => ({ data: { id: "node:" + id, label } })),
+      ...edges.map(({ from, to, label }) => ({
+        data: { source: "node:" + from, target: "node:" + to, label: label || "" }
+      }))
+    ],
+    layout: { name: "breadthfirst", directed: true, padding: 24 },
+    style: [
+      { selector: "node", style: {
+        label: "data(label)", shape: "round-rectangle", width: 126, height: 50,
+        "background-color": "#145578", color: "white", "font-size": 13,
+        "text-valign": "center", "text-wrap": "wrap", "text-max-width": 116
+      } },
+      { selector: "edge", style: {
+        label: "data(label)", "curve-style": "bezier", "target-arrow-shape": "triangle",
+        width: 2, "font-size": 12, "text-background-color": "white", "text-background-opacity": 1
+      } }
+    ]
+  });
+}
+
+function diagramPngOptions() {
+  return { full: true, scale: 2, bg: "#ffffff" };
+}
+
 document.addEventListener("alpine:init", () => {
   Alpine.data("diagram", () => {
     let graph;
     let disposed = false;
     return {
+      ready: false,
       async init() {
-        const container = this.$el;
+        const container = this.$refs.view;
         try {
-          const { nodes, edges } = JSON.parse(container.dataset.graph);
-          const { default: cytoscape } = await import("https://cdn.jsdelivr.net/npm/cytoscape@3.33.1/dist/cytoscape.esm.min.mjs");
           await this.$nextTick();
-          if (disposed || !container.isConnected) return;
-          graph = cytoscape({
-            container,
-            elements: [
-              ...nodes.map(({ id, label }) => ({ data: { id: "node:" + id, label } })),
-              ...edges.map(({ from, to, label }) => ({
-                data: { source: "node:" + from, target: "node:" + to, label: label || "" }
-              }))
-            ],
-            layout: { name: "breadthfirst", directed: true, padding: 24 },
-            style: [
-              { selector: "node", style: {
-                label: "data(label)", shape: "round-rectangle", width: 126, height: 50,
-                "background-color": "#145578", color: "white", "font-size": 13,
-                "text-valign": "center", "text-wrap": "wrap", "text-max-width": 116
-              } },
-              { selector: "edge", style: {
-                label: "data(label)", "curve-style": "bezier", "target-arrow-shape": "triangle",
-                width: 2, "font-size": 12, "text-background-color": "white", "text-background-opacity": 1
-              } }
-            ]
-          });
+          if (disposed) return;
+          graph = await renderDiagram(container, JSON.parse(container.dataset.graph));
+          if (disposed) graph.destroy();
+          else this.ready = true;
         } catch {
           container.removeAttribute("role");
           container.textContent = "Impossible d’afficher ce diagramme.";
+        }
+      },
+      async exportDiagram() {
+        if (!this.ready) return;
+        this.ready = false;
+        try {
+          const blob = await graph.png({ ...diagramPngOptions(), output: "blob-promise" });
+          const name = this.$refs.view.getAttribute("aria-label");
+          downloadBlob(blob, (name.replace(/[^\p{L}\p{N}._-]+/gu, "-") || "diagramme") + ".png");
+        } catch {
+          this.setStatus("Impossible de créer le PNG du diagramme.", true);
+        } finally {
+          this.ready = true;
         }
       },
       destroy() {

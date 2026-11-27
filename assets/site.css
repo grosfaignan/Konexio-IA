@@ -3,6 +3,8 @@
 #document-preview { max-width: 78ch; margin-inline: auto; overflow-wrap: anywhere; }
 #document-preview .document-paragraph, #document-preview .document-quote { white-space: pre-wrap; }
 #document-preview pre { max-width: 100%; overflow: auto; }
+.support-png { overflow-wrap: anywhere; }
+.support-png :is(.document-paragraph, .document-quote, pre) { white-space: pre-wrap; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }

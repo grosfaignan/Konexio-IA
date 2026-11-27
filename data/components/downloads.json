@@ -2,5 +2,6 @@
   { "id": "md", "label": "MD", "name": "Markdown" },
   { "id": "html", "label": "HTML", "name": "HTML" },
   { "id": "pdf", "label": "PDF", "name": "PDF" },
-  { "id": "docx", "label": "WORD", "name": "Word" }
+  { "id": "docx", "label": "WORD", "name": "Word" },
+  { "id": "png", "label": "PNG", "name": "PNG" }
 ]

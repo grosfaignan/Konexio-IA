@@ -6,9 +6,9 @@
   <meta name="description" content="Trouvez une ressource pédagogique et téléchargez-la dans le format qui vous convient.">
   <title>Ressources téléchargeables</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.8/dist/yeti/bootstrap.min.css">
-  <link rel="stylesheet" href="assets/site.css?v=10">
-  <script src="assets/diagram.js" defer></script>
-  <script src="assets/generator.js?v=5" defer></script>
+  <link rel="stylesheet" href="assets/site.css?v=11">
+  <script src="assets/diagram.js?v=2" defer></script>
+  <script src="assets/generator.js?v=6" defer></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.17.5/dist/cdn.min.js"></script>
 </head>
 <body x-data="library" class="min-vh-100 d-flex flex-column bg-body">
@@ -22,7 +22,7 @@
             <template x-for="format in formats" :key="format.id">
               <button type="button" class="btn btn-outline-primary btn-sm" :disabled="busyFormat !== null"
                 :aria-label="'Télécharger ' + selectedDocument?.title + ' en ' + format.name" @click="download(selectedDocument, format.id)">
-                <svg aria-hidden="true" width="18" height="18"><use :href="'assets/formats.svg#' + format.id"></use></svg>
+                <svg aria-hidden="true" width="18" height="18"><use :href="'assets/formats.svg?v=2#' + format.id"></use></svg>
                 <span x-text="format.label"></span>
               </button>
             </template>
@@ -38,7 +38,7 @@
     <div id="catalogue-view">
       <section class="library-intro" aria-labelledby="page-title">
         <div><h1 id="page-title">Ressources pédagogiques</h1>
-        <p>Ouvrez un document pour le lire ou le télécharger en PDF, Word, HTML ou Markdown.</p></div>
+        <p>Ouvrez un document pour le lire ou le télécharger en PDF, Word, HTML, Markdown ou PNG.</p></div>
         <img src="assets/atelier-ia.jpg" alt="Trois apprenants discutent autour d’une table, avec des livres marqués « IA » et « π »." width="1120" height="630" class="library-art">
       </section>
       <section class="border-top pt-4 pb-5" aria-labelledby="library-title">
@@ -81,7 +81,7 @@
             <template x-for="format in formats" :key="format.id">
               <button type="button" class="btn btn-outline-primary btn-sm" :disabled="busyFormat !== null"
                 :aria-label="'Télécharger ' + item?.title + ' en ' + format.name" @click="download(item, format.id)">
-                <svg aria-hidden="true" width="18" height="18"><use :href="'assets/formats.svg#' + format.id"></use></svg>
+                <svg aria-hidden="true" width="18" height="18"><use :href="'assets/formats.svg?v=2#' + format.id"></use></svg>
                 <span x-text="format.label"></span>
               </button>
             </template>

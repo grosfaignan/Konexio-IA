@@ -1,8 +1,13 @@
 <% it.blocks.forEach((block) => { %>
   <% if (block.type === "diagram") { %>
-    <figure class="my-4">
-      <figcaption class="fw-semibold mb-2"><%= block.title %></figcaption>
-      <div x-data="diagram" class="diagram-view border rounded" data-graph="<%= JSON.stringify(block) %>" role="img" aria-label="<%= block.title %>"></div>
+    <figure class="my-4" x-data="diagram">
+      <figcaption class="fw-semibold mb-2 d-flex align-items-center justify-content-between gap-2">
+        <span><%= block.title %></span>
+        <button type="button" class="btn btn-outline-primary btn-sm" :disabled="!ready" @click="exportDiagram()" aria-label="Télécharger le diagramme « <%= block.title %> » en PNG">
+          <svg aria-hidden="true" width="18" height="18"><use href="assets/formats.svg?v=2#png"></use></svg> PNG
+        </button>
+      </figcaption>
+      <div x-ref="view" class="diagram-view border rounded" data-graph="<%= JSON.stringify(block) %>" role="img" aria-label="<%= block.title %>"></div>
     </figure>
   <% } %>
   <% if (block.type === "heading") { %><h<%= block.level %> class="mt-4 mb-3"><%= block.text %></h<%= block.level %>><% } %>
