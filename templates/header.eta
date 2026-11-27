@@ -1,0 +1,6 @@
+<header class="document-header">
+  <p class="document-eyebrow"><%= it.eyebrow %></p>
+  <p class="document-category"><%= it.category %></p>
+  <h1><%= it.title %></h1>
+  <p class="document-description"><%= it.description %></p>
+</header>

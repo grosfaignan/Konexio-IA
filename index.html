@@ -7,6 +7,7 @@
   <meta name="description" content="Trouvez une ressource pédagogique et téléchargez-la dans le format qui vous convient.">
   <title>Ressources téléchargeables</title>
   <link rel="stylesheet" href="assets/site.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.17.5/dist/cdn.min.js"></script>
   <script src="assets/generator.js" defer></script>
 </head>
 <body>
@@ -15,21 +16,25 @@
     <span class="masthead-note">Médiathèque pédagogique</span>
   </header>
 
-  <main>
-    <section id="document-banner" class="document-banner" hidden aria-label="Téléchargement du document">
-      <button id="back-to-catalogue" class="back-button" type="button">← Toutes les ressources</button>
+  <main x-data="library">
+    <section id="document-banner" class="document-banner" x-show="selectedDocument" aria-label="Téléchargement du document" x-cloak>
+      <button class="back-button" type="button" @click="closePreview()">← Toutes les ressources</button>
       <div class="banner-content">
         <div class="banner-title-wrap">
-          <span id="preview-category" class="category"></span>
-          <h2 id="preview-title"></h2>
+          <span class="category" x-text="selectedDocument?.category"></span>
+          <h2 x-text="selectedDocument?.title"></h2>
         </div>
-        <div id="preview-downloads" class="format-actions" aria-label="Télécharger le document"></div>
+        <div class="format-actions preview-downloads" :aria-label="`Télécharger ${selectedDocument?.title || 'le document'}`">
+          <template x-for="format in formats" :key="format.id">
+            <button class="format-button" type="button" :data-format="format.id" :disabled="busyFormat !== null" :aria-label="`Télécharger « ${selectedDocument?.title} » en ${format.name}`" :title="`Télécharger en ${format.name}`" x-text="busyFormat === format.id ? '…' : format.label" @click="download(selectedDocument, format.id, $event.currentTarget)"></button>
+          </template>
+        </div>
       </div>
     </section>
 
-    <p id="status" class="status" role="status" aria-live="polite">Chargement du catalogue…</p>
+    <p id="status" class="status" role="status" aria-live="polite" :class="{ error: hasError }" x-text="status">Chargement du catalogue…</p>
 
-    <div id="catalogue-view">
+    <div id="catalogue-view" x-show="!selectedDocument" x-cloak>
       <section class="intro" aria-labelledby="page-title">
         <div class="intro-copy">
           <p class="kicker"><span class="live-dot" aria-hidden="true"></span> Ressources à télécharger</p>
@@ -49,33 +54,45 @@
             <p class="section-label">Catalogue</p>
             <h2 id="library-title">Toutes les ressources</h2>
           </div>
-          <span class="result-count" id="result-count">Chargement…</span>
+          <span class="result-count" x-text="ready ? `${visibleDocuments.length} ressource${visibleDocuments.length === 1 ? '' : 's'}` : 'Chargement…'">Chargement…</span>
         </div>
 
         <div class="toolbar">
           <label class="search-box">
             <span class="search-icon" aria-hidden="true">⌕</span>
             <span class="sr-only">Rechercher une ressource</span>
-            <input id="search" type="search" placeholder="Rechercher par titre ou thème" autocomplete="off">
-            <button id="clear-search" class="clear-search" type="button" aria-label="Effacer la recherche" hidden>×</button>
+            <input id="search" type="search" placeholder="Rechercher par titre ou thème" autocomplete="off" x-model="query" @keydown.escape="query = ''">
+            <button class="clear-search" type="button" aria-label="Effacer la recherche" x-show="query" @click="query = ''" x-cloak>×</button>
           </label>
           <label class="filter-label" for="category-filter">Thème</label>
-          <select id="category-filter" aria-label="Filtrer par thème">
+          <select id="category-filter" aria-label="Filtrer par thème" x-model="category">
             <option value="all">Tous les thèmes</option>
+            <template x-for="value in categories" :key="value"><option :value="value" x-text="value"></option></template>
           </select>
         </div>
 
-        <div id="documents" class="document-list" aria-label="Liste des ressources"></div>
-        <div id="empty-state" class="empty-state" hidden>
+        <div id="documents" class="document-list" aria-label="Liste des ressources">
+          <template x-for="item in visibleDocuments" :key="item.id">
+            <article class="document-card">
+              <div>
+                <div class="document-meta"><span class="category" x-text="item.category"></span><span>Source JSON</span></div>
+                <h3 class="document-title"><button class="document-title-button" type="button" :aria-label="`Afficher l’aperçu HTML de « ${item.title} »`" @click="openPreview(item, $event.currentTarget)" x-text="item.title"></button></h3>
+                <p class="document-description" x-text="item.description"></p>
+              </div>
+            </article>
+          </template>
+        </div>
+        <div id="empty-state" class="empty-state" x-show="ready && (catalog.length === 0 || visibleDocuments.length === 0)" x-cloak>
           <span class="empty-mark" aria-hidden="true">＋</span>
-          <h3 id="empty-title">Aucune ressource pour le moment</h3>
-          <p id="empty-copy">Ajoutez un fichier JSON dans le dossier <code>documents/</code> du dépôt, puis publiez la mise à jour.</p>
+          <h3 x-text="catalog.length === 0 ? 'Aucune ressource pour le moment' : 'Aucun résultat'"></h3>
+          <p x-show="catalog.length === 0">Ajoutez un fichier JSON conforme au <a href="schemas/document.schema.json">schéma du document</a> dans le dossier <code>documents/</code>, puis publiez la mise à jour.</p>
+          <p x-show="catalog.length > 0">Essayez un autre mot ou choisissez un autre thème.</p>
         </div>
       </section>
     </div>
 
-    <section id="preview-view" class="preview-view" hidden aria-label="Aperçu HTML du document">
-      <iframe id="document-preview" title="Aperçu HTML du document" sandbox=""></iframe>
+    <section id="preview-view" class="preview-view" x-show="selectedDocument" aria-label="Aperçu HTML du document" x-cloak>
+      <iframe id="document-preview" :srcdoc="previewHtml" :title="`Aperçu HTML : ${selectedDocument?.title || 'document'}`" sandbox=""></iframe>
     </section>
   </main>
 
@@ -85,5 +102,4 @@
   </footer>
 </body>
 </html>
-
 

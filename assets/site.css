@@ -15,6 +15,7 @@
 }
 
 * { box-sizing: border-box; }
+[x-cloak] { display: none !important; }
 
 body {
   min-width: 320px;
@@ -137,5 +138,4 @@ select { width: 100%; padding: 0 12px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
-
 

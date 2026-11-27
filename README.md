@@ -1,4 +1,4 @@
-# Konnexio IA — générateur de documents
+# Médiathèque — générateur de documents
 
 Une médiathèque statique publiée sur GitHub Pages. **Les documents JSON sont les sources maîtres.** Lorsqu’un visiteur clique sur un format, son navigateur charge le JSON correspondant et fabrique le fichier localement. Aucun document n’est envoyé à un serveur de conversion.
 
@@ -27,7 +27,13 @@ Créez un fichier `.json` dans `documents/` ou dans un sous-dossier. Utilisez la
 
 Types de contenu : `heading` (niveaux 1 à 3), `paragraph`, `list` (optionnellement `"ordered": true`), `quote`, `code` et `separator`. Les champs `schemaVersion`, `title`, `description`, `category` et `content` sont requis. `filename` est facultatif.
 
-Chaque fiche permet de télécharger le même contenu en Markdown, HTML, PDF ou Word (`.docx`). Le catalogue est actualisé à chaque push sur `main` ; les fichiers PDF et DOCX ne sont créés qu’au clic dans le navigateur.
+Chaque fiche permet de prévisualiser le document puis de télécharger le même contenu en Markdown, HTML, PDF ou Word (`.docx`). Le catalogue est actualisé à chaque push sur `main` ; les fichiers sont créés au clic dans le navigateur.
+
+## Modèles HTML partagés
+
+Les données d’en-tête et de pied de page des documents sont maintenues dans `data/header.json` et `data/footer.json`. Le groupe de boutons de téléchargement a sa configuration dans `data/components/downloads.json`. Les modèles Eta communs sont dans `templates/` : `page.eta` assemble les partials `header.eta`, `blocks.eta` et `footer.eta`. Un nouveau document n’a besoin que de son JSON dans `documents/`, sans fichier Eta correspondant. `schema.json` décrit le format attendu et n’est pas transmis au moteur Eta.
+
+Alpine.js pilote les composants d’interface du catalogue (recherche, filtre, aperçu et actions de téléchargement). Eta rend le HTML de l’aperçu et du fichier téléchargé depuis la même source JSON.
 
 ## Développement local
 

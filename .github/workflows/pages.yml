@@ -7,6 +7,8 @@ on:
       - "documents/**"
       - "assets/**"
       - "schemas/**"
+      - "data/**"
+      - "templates/**"
       - "index.html"
       - "scripts/build_catalog.py"
       - ".github/workflows/pages.yml"

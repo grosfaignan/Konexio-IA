@@ -1,0 +1,10 @@
+<% it.blocks.forEach((block) => { %>
+  <% if (block.type === "heading") { %><h<%= block.level %>><%= block.text %></h<%= block.level %>><% } %>
+  <% if (block.type === "paragraph") { %><p class="document-paragraph"><%= block.text %></p><% } %>
+  <% if (block.type === "quote") { %><blockquote><%= block.text %></blockquote><% } %>
+  <% if (block.type === "code") { %><pre><code><%= block.text %></code></pre><% } %>
+  <% if (block.type === "list") { %>
+    <% if (block.ordered) { %><ol><% block.items.forEach((item) => { %><li><%= item %></li><% }) %></ol><% } else { %><ul><% block.items.forEach((item) => { %><li><%= item %></li><% }) %></ul><% } %>
+  <% } %>
+  <% if (block.type === "separator") { %><hr><% } %>
+<% }) %>

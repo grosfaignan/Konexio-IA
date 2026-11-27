@@ -87,7 +87,7 @@ def build() -> None:
         shutil.rmtree(SITE)
     SITE.mkdir(parents=True)
 
-    for name in ("index.html", "assets", "schemas"):
+    for name in ("index.html", "assets", "schemas", "data", "templates"):
         source = ROOT / name
         target = SITE / name
         if source.is_dir():

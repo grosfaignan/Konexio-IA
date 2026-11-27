@@ -1,115 +1,14 @@
-const FORMATS = [
-  ["md", "MD", "Markdown"],
-  ["html", "HTML", "HTML"],
-  ["pdf", "PDF", "PDF"],
-  ["docx", "WORD", "Word"],
-];
-
-const list = document.querySelector("#documents");
-const statusLine = document.querySelector("#status");
-const countLine = document.querySelector("#result-count");
-const emptyState = document.querySelector("#empty-state");
-const emptyTitle = document.querySelector("#empty-title");
-const emptyCopy = document.querySelector("#empty-copy");
-const search = document.querySelector("#search");
-const clearSearch = document.querySelector("#clear-search");
-const categoryFilter = document.querySelector("#category-filter");
-const catalogueView = document.querySelector("#catalogue-view");
-const documentBanner = document.querySelector("#document-banner");
-const previewView = document.querySelector("#preview-view");
-const documentPreview = document.querySelector("#document-preview");
-const previewTitle = document.querySelector("#preview-title");
-const previewCategory = document.querySelector("#preview-category");
-const previewDownloads = document.querySelector("#preview-downloads");
-const backToCatalogue = document.querySelector("#back-to-catalogue");
-
-let catalog = [];
 const documentCache = new Map();
-let lastPreviewTrigger = null;
+let eta;
+let pageTemplate;
+let headerTemplate;
+let footerTemplate;
+let blocksTemplate;
+let headerData;
+let footerData;
+let downloadFormats;
 
 const safeText = (value) => String(value ?? "");
-
-function setStatus(message, isError = false) {
-  statusLine.textContent = message;
-  statusLine.classList.toggle("error", isError);
-}
-
-function makeCard(item) {
-  const card = document.createElement("article");
-  card.className = "document-card";
-  card.dataset.title = `${item.title} ${item.description} ${item.category}`.toLocaleLowerCase("fr");
-  card.dataset.category = item.category;
-
-  const copy = document.createElement("div");
-  const meta = document.createElement("div");
-  meta.className = "document-meta";
-  const category = document.createElement("span");
-  category.className = "category";
-  category.textContent = item.category;
-  const sourceType = document.createElement("span");
-  sourceType.textContent = "Source JSON";
-  meta.append(category, sourceType);
-
-  const title = document.createElement("h3");
-  title.className = "document-title";
-  const titleButton = document.createElement("button");
-  titleButton.type = "button";
-  titleButton.className = "document-title-button";
-  titleButton.dataset.previewDocumentId = item.id;
-  titleButton.textContent = item.title;
-  titleButton.setAttribute("aria-label", `Afficher l’aperçu HTML de « ${item.title} »`);
-  title.append(titleButton);
-  const description = document.createElement("p");
-  description.className = "document-description";
-  description.textContent = item.description;
-  copy.append(meta, title, description);
-
-  card.append(copy);
-  return card;
-}
-
-function populateFormatButtons(container, item) {
-  container.replaceChildren();
-  container.setAttribute("aria-label", `Télécharger ${item.title}`);
-  for (const [format, label, longLabel] of FORMATS) {
-    const button = document.createElement("button");
-    button.className = "format-button";
-    button.type = "button";
-    button.dataset.format = format;
-    button.dataset.documentId = item.id;
-    button.textContent = label;
-    button.title = `Télécharger en ${longLabel}`;
-    button.setAttribute("aria-label", `Télécharger « ${item.title} » en ${longLabel}`);
-    container.append(button);
-  }
-}
-
-function updateView() {
-  const query = search.value.trim().toLocaleLowerCase("fr");
-  const category = categoryFilter.value;
-  const visible = [...list.children].filter((card) => {
-    const matches = card.dataset.title.includes(query)
-      && (category === "all" || card.dataset.category === category);
-    card.hidden = !matches;
-    return matches;
-  });
-
-  countLine.textContent = `${visible.length} ressource${visible.length === 1 ? "" : "s"}`;
-  clearSearch.hidden = !search.value;
-  if (catalog.length && visible.length === 0) {
-    emptyTitle.textContent = "Aucun résultat";
-    emptyCopy.textContent = "Essayez un autre mot ou choisissez un autre thème.";
-    emptyState.hidden = false;
-  } else {
-    emptyState.hidden = catalog.length > 0;
-  }
-}
-
-function escapeHtml(value) {
-  return safeText(value).replace(/[&<>"']/g, (character) => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
-  })[character]);
-}
 
 function usableContent(documentData) {
   if (!documentData || documentData.schemaVersion !== 1 || !Array.isArray(documentData.content)) {
@@ -131,36 +30,6 @@ async function loadDocument(item) {
   return documentData;
 }
 
-async function showPreview(item, trigger) {
-  lastPreviewTrigger = trigger;
-  setStatus(`Ouverture de l’aperçu : ${item.title}…`);
-  try {
-    const documentData = await loadDocument(item);
-    documentPreview.srcdoc = htmlFor(documentData);
-    documentPreview.title = `Aperçu HTML : ${item.title}`;
-    previewTitle.textContent = item.title;
-    previewCategory.textContent = item.category;
-    populateFormatButtons(previewDownloads, item);
-    catalogueView.hidden = true;
-    previewView.hidden = false;
-    documentBanner.hidden = false;
-    backToCatalogue.focus({ preventScroll: true });
-    setStatus(`Aperçu HTML affiché : ${item.title}`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  } catch (error) {
-    setStatus(error instanceof Error ? error.message : "L’aperçu HTML n’a pas pu être chargé.", true);
-  }
-}
-
-function returnToCatalogue() {
-  documentBanner.hidden = true;
-  previewView.hidden = true;
-  catalogueView.hidden = false;
-  documentPreview.srcdoc = "";
-  setStatus("Catalogue des ressources.");
-  if (lastPreviewTrigger?.isConnected) lastPreviewTrigger.focus();
-}
-
 function markdownFor(documentData) {
   const chunks = [`# ${documentData.title}`, "", documentData.description || ""];
   for (const block of usableContent(documentData)) {
@@ -177,21 +46,32 @@ function markdownFor(documentData) {
 }
 
 function htmlFor(documentData) {
-  const body = [];
-  body.push(`<header><p class="category">${escapeHtml(documentData.category)}</p><h1>${escapeHtml(documentData.title)}</h1><p class="description">${escapeHtml(documentData.description)}</p></header>`);
-  for (const block of usableContent(documentData)) {
-    if (block.type === "heading") body.push(`<h${block.level}>${escapeHtml(block.text)}</h${block.level}>`);
-    else if (block.type === "paragraph") body.push(`<p>${escapeHtml(block.text).replace(/\n/g, "<br>")}</p>`);
-    else if (block.type === "quote") body.push(`<blockquote>${escapeHtml(block.text).replace(/\n/g, "<br>")}</blockquote>`);
-    else if (block.type === "code") body.push(`<pre><code>${escapeHtml(block.text)}</code></pre>`);
-    else if (block.type === "list") {
-      const tag = block.ordered ? "ol" : "ul";
-      body.push(`<${tag}>${block.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</${tag}>`);
-    } else if (block.type === "separator") body.push("<hr>");
-  }
-  return `<!doctype html>
-<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escapeHtml(documentData.title)}</title>
-<style>body{max-width:760px;margin:64px auto;padding:0 28px;color:#18251f;font:17px/1.7 Georgia,serif}header{margin-bottom:42px;padding-bottom:23px;border-bottom:1px solid #dce4de}.category{color:#35634e;font:700 12px/1.4 system-ui,sans-serif;text-transform:uppercase;letter-spacing:.1em}h1{font-size:42px;line-height:1.1;letter-spacing:-.04em}h2,h3{margin-top:1.8em;font-family:system-ui,sans-serif;line-height:1.25}h2{font-size:25px}h3{font-size:20px}.description{color:#65716b;font:16px/1.6 system-ui,sans-serif}blockquote{margin:24px 0;padding:4px 0 4px 20px;border-left:3px solid #d76545;color:#536259}pre{overflow:auto;padding:18px;background:#f1f4f1;border-radius:6px;font:14px/1.6 ui-monospace,monospace}li{margin:.45em 0}hr{margin:30px 0;border:0;border-top:1px solid #dce4de}@media print{body{margin:22mm auto}}</style></head><body>${body.join("\n")}</body></html>`;
+  if (!eta) throw new Error("Les modèles Eta ne sont pas chargés.");
+  const data = {
+    document: { ...documentData, content: usableContent(documentData) },
+    header: { ...headerData, title: documentData.title, category: documentData.category, description: documentData.description },
+    footer: footerData,
+    content: usableContent(documentData),
+  };
+  return eta.render("@page", data);
+}
+
+async function loadTemplates() {
+  const { Eta } = await import("https://cdn.jsdelivr.net/npm/eta@3.5.0/+esm");
+  eta = new Eta({ autoEscape: true });
+  const read = async (path) => {
+    const response = await fetch(new URL(path, document.baseURI));
+    if (!response.ok) throw new Error(`Le fichier ${path} n’a pas pu être chargé (${response.status}).`);
+    return response.headers.get("content-type")?.includes("json") ? response.json() : response.text();
+  };
+  [pageTemplate, headerTemplate, footerTemplate, blocksTemplate, headerData, footerData, downloadFormats] = await Promise.all([
+    read("templates/page.eta"), read("templates/header.eta"), read("templates/footer.eta"), read("templates/blocks.eta"),
+    read("data/header.json"), read("data/footer.json"), read("data/components/downloads.json"),
+  ]);
+  eta.loadTemplate("@page", pageTemplate);
+  eta.loadTemplate("@header", headerTemplate);
+  eta.loadTemplate("@footer", footerTemplate);
+  eta.loadTemplate("@blocks", blocksTemplate);
 }
 
 function blocksAsLines(documentData) {
@@ -404,92 +284,97 @@ function downloadBlob(blob, filename) {
   setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
 }
 
-async function createDownload(button) {
-  const item = catalog.find((entry) => entry.id === button.dataset.documentId);
-  if (!item) return;
-  const actions = button.closest(".format-actions");
-  const buttons = [...actions.querySelectorAll("button")];
-  buttons.forEach((element) => { element.disabled = true; });
-  button.dataset.previousText = button.textContent;
-  button.textContent = "…";
-  const labels = { md: "Markdown", html: "HTML", pdf: "PDF", docx: "Word" };
-  setStatus(`Création du fichier ${labels[button.dataset.format]} : ${item.title}…`);
-  try {
-    const documentData = await loadDocument(item);
-    const blob = blobFor(documentData, button.dataset.format);
-    const extensions = { md: "md", html: "html", pdf: "pdf", docx: "docx" };
-    const filename = safeText(item.filename || item.id.split("/").pop()).replace(/[^\p{L}\p{N}._-]+/gu, "-");
-    downloadBlob(blob, `${filename}.${extensions[button.dataset.format]}`);
-    setStatus(`Fichier ${labels[button.dataset.format]} prêt : ${filename}.${extensions[button.dataset.format]}`);
-  } catch (error) {
-    setStatus(error instanceof Error ? error.message : "La création du fichier a échoué.", true);
-  } finally {
-    buttons.forEach((element) => { element.disabled = false; });
-    button.textContent = button.dataset.previousText;
-  }
-}
+document.addEventListener("alpine:init", () => {
+  window.Alpine.data("library", () => ({
+    catalog: [],
+    ready: false,
+    query: "",
+    category: "all",
+    selectedDocument: null,
+    previewHtml: "",
+    lastPreviewTrigger: null,
+    status: "Chargement du catalogue…",
+    hasError: false,
+    busyFormat: null,
+    formats: [],
 
-async function initialize() {
-  try {
-    const response = await fetch(new URL("catalog.json", document.baseURI));
-    if (!response.ok) throw new Error(`Le catalogue n’a pas pu être chargé (${response.status}).`);
-    catalog = await response.json();
-    if (!Array.isArray(catalog)) throw new Error("Le catalogue JSON est invalide.");
+    get categories() {
+      return [...new Set(this.catalog.map((item) => item.category).filter(Boolean))]
+        .sort((a, b) => a.localeCompare(b, "fr"));
+    },
 
-    const categories = [...new Set(catalog.map((item) => item.category).filter(Boolean))]
-      .sort((a, b) => a.localeCompare(b, "fr"));
-    for (const value of categories) {
-      const option = document.createElement("option");
-      option.value = value;
-      option.textContent = value;
-      categoryFilter.append(option);
-    }
-    for (const item of catalog) list.append(makeCard(item));
+    get visibleDocuments() {
+      const query = this.query.trim().toLocaleLowerCase("fr");
+      return this.catalog.filter((item) => {
+        const searchable = `${item.title} ${item.description} ${item.category}`.toLocaleLowerCase("fr");
+        return searchable.includes(query) && (this.category === "all" || item.category === this.category);
+      });
+    },
 
-    if (catalog.length === 0) {
-      countLine.textContent = "0 ressource";
-      emptyTitle.textContent = "Aucune ressource pour le moment";
-      emptyCopy.innerHTML = 'Ajoutez un fichier JSON conforme au <a href="schemas/document.schema.json">schéma du document</a> dans le dossier <code>documents/</code>, puis publiez la mise à jour.';
-      emptyState.hidden = false;
-      setStatus("Le catalogue est prêt pour vos premiers documents JSON.");
-    } else {
-      setStatus("Choisissez un format pour créer votre fichier.");
-      updateView();
-    }
-  } catch (error) {
-    countLine.textContent = "Catalogue indisponible";
-    emptyTitle.textContent = "Impossible de charger le catalogue";
-    emptyCopy.textContent = error instanceof Error ? error.message : "Vérifiez votre connexion puis actualisez la page.";
-    emptyState.hidden = false;
-    setStatus("Le catalogue n’a pas pu être chargé.", true);
-  }
-}
+    setStatus(message, isError = false) {
+      this.status = message;
+      this.hasError = isError;
+    },
 
-search.addEventListener("input", updateView);
-search.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && search.value) {
-    search.value = "";
-    updateView();
-  }
+    async init() {
+      try {
+        const response = await fetch(new URL("catalog.json", document.baseURI));
+        if (!response.ok) throw new Error(`Le catalogue n’a pas pu être chargé (${response.status}).`);
+        const entries = await response.json();
+        if (!Array.isArray(entries)) throw new Error("Le catalogue JSON est invalide.");
+        await loadTemplates();
+        this.catalog = entries;
+        this.formats = downloadFormats;
+        this.ready = true;
+        this.setStatus(entries.length ? "Choisissez une ressource pour afficher son aperçu." : "Le catalogue est prêt pour vos premiers documents JSON.");
+      } catch (error) {
+        this.ready = true;
+        this.setStatus(error instanceof Error ? error.message : "Vérifiez votre connexion puis actualisez la page.", true);
+      }
+    },
+
+    async openPreview(item, trigger) {
+      this.lastPreviewTrigger = trigger;
+      this.setStatus(`Ouverture de l’aperçu : ${item.title}…`);
+      try {
+        const documentData = await loadDocument(item);
+        this.previewHtml = htmlFor(documentData);
+        this.selectedDocument = item;
+        this.setStatus(`Aperçu HTML affiché : ${item.title}`);
+        this.$nextTick(() => document.querySelector(".back-button")?.focus({ preventScroll: true }));
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } catch (error) {
+        this.setStatus(error instanceof Error ? error.message : "L’aperçu HTML n’a pas pu être chargé.", true);
+      }
+    },
+
+    closePreview() {
+      this.selectedDocument = null;
+      this.previewHtml = "";
+      this.setStatus("Catalogue des ressources.");
+      this.$nextTick(() => {
+        if (this.lastPreviewTrigger?.isConnected) this.lastPreviewTrigger.focus();
+      });
+    },
+
+    async download(item, format) {
+      if (!item || this.busyFormat) return;
+      this.busyFormat = format;
+      const labels = { md: "Markdown", html: "HTML", pdf: "PDF", docx: "Word" };
+      const extensions = { md: "md", html: "html", pdf: "pdf", docx: "docx" };
+      this.setStatus(`Création du fichier ${labels[format]} : ${item.title}…`);
+      try {
+        const documentData = await loadDocument(item);
+        const blob = blobFor(documentData, format);
+        const filename = safeText(item.filename || item.id.split("/").pop()).replace(/[^\p{L}\p{N}._-]+/gu, "-");
+        downloadBlob(blob, `${filename}.${extensions[format]}`);
+        this.setStatus(`Fichier ${labels[format]} prêt : ${filename}.${extensions[format]}`);
+      } catch (error) {
+        this.setStatus(error instanceof Error ? error.message : "La création du fichier a échoué.", true);
+      } finally {
+        this.busyFormat = null;
+      }
+    },
+  }));
 });
-clearSearch.addEventListener("click", () => {
-  search.value = "";
-  updateView();
-  search.focus();
-});
-categoryFilter.addEventListener("change", updateView);
-list.addEventListener("click", (event) => {
-  const titleButton = event.target.closest("button[data-preview-document-id]");
-  if (titleButton) {
-    const item = catalog.find((entry) => entry.id === titleButton.dataset.previewDocumentId);
-    if (item) showPreview(item, titleButton);
-    return;
-  }
-  const button = event.target.closest("button[data-document-id]");
-  if (button && !button.disabled) createDownload(button);
-});
-backToCatalogue.addEventListener("click", returnToCatalogue);
-
-initialize();
-
 
