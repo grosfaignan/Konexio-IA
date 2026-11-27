@@ -74,7 +74,50 @@
 #library-title { scroll-margin-top: 5rem; }
 .diagram-view { width: 100%; height: clamp(18rem, 50vh, 32rem); }
 @media (max-width: 575.98px) {
-  .library-intro { grid-template-columns: 1fr; }
-  .library-art { width: 17rem; }
+  .library-nav {
+    min-height: 3rem;
+    gap: .25rem .5rem;
+    padding-block: .25rem;
+  }
+  .library-nav > :is(a, button) { display: inline-flex; align-items: center; min-height: 44px; }
+  .library-intro {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: .6rem 1rem;
+    margin-block: 0 1.25rem;
+    padding: 1rem;
+    border-inline-start-width: .2rem;
+  }
+  .library-intro > div { display: contents; }
+  .library-intro h1 {
+    grid-column: 1 / -1;
+    margin: 0;
+    font-size: clamp(1.55rem, 6.5vw, 2.1rem);
+  }
+  .library-intro p { margin: 0; font-size: 1rem; line-height: 1.45; }
+  .library-art { width: 100%; }
+  #catalogue-view :is(.form-control, .form-select) { min-height: 44px; font-size: 1rem; }
+  #catalogue-view .input-group .btn { min-width: 44px; }
+  .resource-card { min-width: 0; }
+  .resource-card .card-body { padding: 1rem .875rem; overflow-wrap: anywhere; }
+  .resource-title { min-height: 44px; }
   .header-downloads { width: 100%; }
+  .download-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
+    gap: .25rem;
+  }
+  .download-actions .btn {
+    flex-direction: column;
+    justify-content: center;
+    gap: .2rem;
+    min-height: 46px;
+    padding: .25rem .125rem;
+    font-size: .75rem;
+    line-height: 1;
+  }
+  #document-preview { padding-inline: 1rem; }
+  #document-preview .document-content { line-height: 1.65; }
+  #document-preview figcaption { flex-wrap: wrap; }
+  #document-preview figcaption > small { order: 1; width: 100%; }
+  #document-preview figcaption .btn { min-height: 44px; }
 }
