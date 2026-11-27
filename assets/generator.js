@@ -36,6 +36,7 @@ function markdownFor(documentData) {
   for (const block of usableContent(documentData)) {
     if (block.type === "heading") chunks.push(`${"#".repeat(block.level)} ${block.text}`);
     else if (block.type === "paragraph") chunks.push(block.text);
+    else if (block.type === "link") chunks.push(`[${block.text}](${block.url})`);
     else if (block.type === "quote") chunks.push(...safeText(block.text).split("\n").map((line) => `> ${line}`));
     else if (block.type === "code") chunks.push(`\`\`\`\n${block.text}\n\`\`\``);
     else if (block.type === "list") {
@@ -66,7 +67,7 @@ async function loadTemplates() {
     return response.headers.get("content-type")?.includes("json") ? response.json() : response.text();
   };
   [bodyTemplate, pageTemplate, headerTemplate, footerTemplate, blocksTemplate, headerData, footerData, downloadFormats] = await Promise.all([
-    read("templates/body.eta"), read("templates/page.eta?v=4"), read("templates/header.eta"), read("templates/footer.eta"), read("templates/blocks.eta?v=3"),
+    read("templates/body.eta"), read("templates/page.eta?v=4"), read("templates/header.eta"), read("templates/footer.eta"), read("templates/blocks.eta?v=4"),
     read("data/header.json"), read("data/footer.json"), read("data/components/downloads.json"),
   ]);
   eta.loadTemplate("@body", bodyTemplate);
@@ -82,6 +83,7 @@ function blocksAsLines(documentData) {
   for (const block of usableContent(documentData)) {
     if (block.type === "heading") lines.push({ text: block.text, style: `heading${block.level}` });
     else if (block.type === "paragraph") lines.push({ text: block.text, style: "normal" });
+    else if (block.type === "link") lines.push({ text: `${block.text}: ${block.url}`, style: "normal" });
     else if (block.type === "quote") lines.push({ text: `“${block.text}”`, style: "quote" });
     else if (block.type === "code") lines.push({ text: block.text, style: "code" });
     else if (block.type === "list") block.items.forEach((item, index) => lines.push({ text: `${block.ordered ? `${index + 1}.` : "•"}  ${item}`, style: "normal" }));
@@ -101,6 +103,7 @@ function docxFor(documentData) {
   for (const block of usableContent(documentData)) {
     if (block.type === "heading") paragraphs.push({ text: block.text, style: `Heading${block.level}` });
     else if (block.type === "paragraph") paragraphs.push({ text: block.text });
+    else if (block.type === "link") paragraphs.push({ text: `${block.text}: ${block.url}` });
     else if (block.type === "quote") paragraphs.push({ text: block.text, style: "Quote" });
     else if (block.type === "code") paragraphs.push({ text: block.text, style: "Code" });
     else if (block.type === "list") block.items.forEach((item, index) => paragraphs.push({ text: `${block.ordered ? `${index + 1}.` : "•"}  ${item}` }));
@@ -228,6 +231,7 @@ function pdfFor(documentData) {
   for (const block of usableContent(documentData)) {
     if (block.type === "heading") writeLine(block.text, `heading${block.level}`);
     else if (block.type === "paragraph") writeLine(block.text, "normal");
+    else if (block.type === "link") writeLine(`${block.text}: ${block.url}`, "normal");
     else if (block.type === "quote") writeLine(`“${block.text}”`, "quote");
     else if (block.type === "code") writeLine(block.text, "code");
     else if (block.type === "list") block.items.forEach((item, index) => writeLine(`${block.ordered ? `${index + 1}.` : "•"}  ${item}`, "normal"));

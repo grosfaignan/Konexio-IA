@@ -61,7 +61,26 @@
     },
     {
       "type": "paragraph",
-      "text": "Des exemples d’entrées et de sorties peuvent orienter la réponse en montrant le type de traitement, les catégories possibles et le format attendu. Des travaux expérimentaux sur l’apprentissage en contexte confirment que ces repères peuvent influencer les réponses. Ils ne garantissent toutefois ni la justesse ni la qualité : le choix et l’ordre des exemples peuvent modifier les résultats. Choisissez des exemples proches de la tâche, variés et représentatifs, puis vérifiez leur effet sur plusieurs cas. Pour une demande simple, un exemple n’est pas toujours nécessaire. (Min et al., 2022 ; Zhao et al., 2021.)"
+      "text": "Des exemples d’entrées et de sorties peuvent orienter la réponse en montrant le type de traitement, les catégories possibles et le format attendu. Ils ne garantissent toutefois ni la justesse ni la qualité. Pour une demande simple, un exemple n’est pas toujours nécessaire."
+    },
+    {
+      "type": "paragraph",
+      "text": "Note : choisissez les exemples avec soin, car ils peuvent orienter la réponse produite par le modèle ; leur choix et leur ordre peuvent aussi modifier les résultats."
+    },
+    {
+      "type": "link",
+      "text": "Min et al. (2022), Rethinking the Role of Demonstrations (EMNLP)",
+      "url": "https://aclanthology.org/2022.emnlp-main.759/"
+    },
+    {
+      "type": "link",
+      "text": "Zhao et al. (2021), Calibrate Before Use (ICML)",
+      "url": "https://proceedings.mlr.press/v139/zhao21c.html"
+    },
+    {
+      "type": "link",
+      "text": "Margatina et al. (2023), Active Learning Principles for In-Context Learning (EMNLP Findings)",
+      "url": "https://aclanthology.org/2023.findings-emnlp.334/"
     },
     {
       "type": "heading",
@@ -144,7 +163,8 @@
         "OpenAI, Guide pratique de prompt engineering pour les usages quotidiens : https://developers.openai.com/cookbook/examples/chatgpt/chatgpt_prompt_guide/chatgpt_prompt_guide",
         "Anthropic, Prompt engineering : bonnes pratiques : https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
         "Min, S. et al. (2022). Rethinking the Role of Demonstrations: What Makes In-Context Learning Work? Proceedings of EMNLP 2022, p. 11048–11064 : https://aclanthology.org/2022.emnlp-main.759/",
-        "Zhao, Z. et al. (2021). Calibrate Before Use: Improving Few-shot Performance of Language Models. Proceedings of ICML 2021, PMLR 139, p. 12697–12706 : https://proceedings.mlr.press/v139/zhao21c.html"
+        "Zhao, Z. et al. (2021). Calibrate Before Use: Improving Few-shot Performance of Language Models. Proceedings of ICML 2021, PMLR 139, p. 12697–12706 : https://proceedings.mlr.press/v139/zhao21c.html",
+        "Margatina, K. et al. (2023). Active Learning Principles for In-Context Learning with Large Language Models. Findings of EMNLP 2023, p. 5011–5034 : https://aclanthology.org/2023.findings-emnlp.334/"
       ]
     }
   ]

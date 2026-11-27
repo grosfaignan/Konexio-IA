@@ -7,12 +7,13 @@ import json
 import shutil
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse
 
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "documents"
 SITE = ROOT / "_site"
-BLOCK_TYPES = {"heading", "paragraph", "list", "quote", "code", "separator"}
+BLOCK_TYPES = {"heading", "paragraph", "list", "quote", "code", "link", "separator"}
 
 
 def read_document(path: Path) -> dict[str, Any]:
@@ -40,8 +41,13 @@ def read_document(path: Path) -> dict[str, Any]:
         if not isinstance(block, dict) or block.get("type") not in BLOCK_TYPES:
             raise ValueError(f"{location} : type attendu parmi {', '.join(sorted(BLOCK_TYPES))}")
         kind = block["type"]
-        if kind in {"heading", "paragraph", "quote", "code"} and not isinstance(block.get("text"), str):
+        if kind in {"heading", "paragraph", "quote", "code", "link"} and not isinstance(block.get("text"), str):
             raise ValueError(f"{location} : le champ text doit être du texte")
+        if kind == "link":
+            url = block.get("url")
+            parsed_url = urlparse(url) if isinstance(url, str) else None
+            if not parsed_url or parsed_url.scheme != "https" or not parsed_url.netloc:
+                raise ValueError(f"{location} : url doit être une adresse HTTPS valide")
         if kind == "heading" and block.get("level") not in {1, 2, 3}:
             raise ValueError(f"{location} : level doit être 1, 2 ou 3")
         if kind == "list" and "ordered" in block and not isinstance(block["ordered"], bool):

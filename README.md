@@ -25,7 +25,7 @@ Créez un fichier `.json` dans `documents/` ou dans un sous-dossier. Utilisez la
 }
 ```
 
-Types de contenu : `heading` (niveaux 1 à 3), `paragraph`, `list` (optionnellement `"ordered": true`), `quote`, `code` et `separator`. Les champs `schemaVersion`, `title`, `description`, `category` et `content` sont requis. `filename` est facultatif.
+Types de contenu : `heading` (niveaux 1 à 3), `paragraph`, `list` (optionnellement `"ordered": true`), `quote`, `code`, `link` (avec `text` et une URL HTTPS) et `separator`. Les champs `schemaVersion`, `title`, `description`, `category` et `content` sont requis. `filename` est facultatif.
 
 Chaque fiche permet de prévisualiser le document puis de télécharger le même contenu en Markdown, HTML, PDF ou Word (`.docx`). Le catalogue est actualisé à chaque push sur `main` ; les fichiers sont créés au clic dans le navigateur.
 
